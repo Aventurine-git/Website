@@ -15,6 +15,7 @@ jobs:
       with:
         fetch-depth: 0
 
+
     - name: 📂 Sync files to Namecheap
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:

@@ -6,7 +6,7 @@ There is no pre-existing codebase, Figma file, or brand deck behind this system 
 
 ## Positioning
 
-"Chaotic and sincere." The brand swings between playful, earnest, cryptic, and a little dark — and the swing itself is the personality. The throughline is the visible joy of making: delight in craft, never performed cool. Identity (queer, neurodivergent, trans/ND-affirming community) is woven into the warmth of the work, never a banner or a slapped-on flag.
+" Chaotic and sincere." The brand swings between playful, earnest, cryptic, and a little dark — and the swing itself is the personality. The throughline is the visible joy of making: delight in craft, never performed cool. Identity (queer, neurodivergent, trans/ND-affirming community) is woven into the warmth of the work, never a banner or a slapped-on flag.
 
 The name comes from the aventurine stone — green-to-teal with a shimmer — used as a *starting hypothesis* for the palette, not a strict rule. In practice the system settled on a Rothko-style color-field system: saturated pastels, pulled toward gray, overlapping and blooming edge-to-edge so there's never dead negative space.
 
