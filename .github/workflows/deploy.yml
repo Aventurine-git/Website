@@ -25,3 +25,5 @@ jobs:
         port: 21
  # Change to 22 if you are using SFTP
         server-dir: ./public_html/ # The folder on Namecheap where your site lives
+        state-name: .ftp-deploy-sync-state.json
+        dangerous-clean-slate: false
