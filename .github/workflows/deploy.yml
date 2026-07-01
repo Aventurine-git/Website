@@ -22,5 +22,6 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        port: 21098 # Change to 22 if you are using SFTP
+        port: 21
+ # Change to 22 if you are using SFTP
         server-dir: ./public_html/ # The folder on Namecheap where your site lives
