@@ -196,20 +196,16 @@
     }
 
     .hero-logo-slot {
-      width: 120px;
-      height: 120px;
       margin-bottom: var(--space-6);
-      border-radius: var(--radius-blob);
-      background: rgba(251, 247, 239, 0.12);
-      backdrop-filter: blur(8px);
-      border: 1px dashed rgba(251, 247, 239, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: var(--text-xs);
-      color: rgba(251, 247, 239, 0.6);
-      letter-spacing: var(--tracking-wide);
-      text-transform: uppercase;
+    }
+
+    .hero-logo-slot img {
+      max-width: 100%;
+      height: auto;
+      max-height: 400px; /* Limit height so it doesn't take up the entire screen */
     }
 
     .hero-mark {
@@ -509,9 +505,13 @@
 
     <!-- HERO -->
     <header class="hero" data-screen-label="Hero">
-      <div class="hero-logo-slot"><img src="assets/logo-temp.svg" alt="Aventurine Dream logo" width="120" height="120">
+      <div class="hero-logo-slot">
+        <img src="assets/logo.png" alt="Aventurine Dream cloud logo">
       </div>
-      <h1 class="hero-mark">aventurine dream</h1>
+      <h1 class="hero-mark">
+        <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;">aventurine dream</span>
+        <img src="assets/wordmark.png" alt="" style="max-width: 100%; height: auto; max-height: 120px; filter: drop-shadow(0 4px 20px rgba(36, 31, 43, 0.35));">
+      </h1>
       <div class="hero-tag">Mixed Media VFX Expressionism</div>
       <div class="hero-scroll">
         <span>wander in</span>
