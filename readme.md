@@ -69,7 +69,7 @@ No existing icon system was provided (no codebase/Figma to inherit from). Approa
 
 ## Assets
 
-`assets/` is currently empty — there is no existing logo file. The landing page hero uses a **dashed placeholder slot** (labeled "logo") in the organic blob shape, sized 120×120, ready for a real wordmark/symbol to drop into once one is designed. All hero/about imagery is deliberately blank for now — Aventurine will source real photography/video stills and the layout should accept it later without restructuring.
+`assets/` currently contains `logo-temp.svg` as a temporary mark. The landing page hero uses the organic blob slot, sized 120×120, ready for a final wordmark/symbol to replace the temporary asset once one is designed. All hero/about imagery is deliberately blank for now — Aventurine will source real photography/video stills and the layout should accept it later without restructuring.
 
 ## Caveats & open flags
 

@@ -1,0 +1,25 @@
+name: Deploy Website to Namecheap
+
+on:
+  push:
+    branches:
+      - main  # Triggers the workflow every time you push to the main branch
+
+jobs:
+  web-deploy:
+    name: Sync Files
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: 📂 Sync files to Namecheap
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        port: 21 # Change to 22 if you are using SFTP
+        server-dir: ./public_html/ # The folder on Namecheap where your site lives
