@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aventurine Dream</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--text-primary);
+      background: var(--av-powder);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: var(--av-magenta);
+      color: var(--av-cream-hi);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ============ COLOR FIELD BACKDROP ============ */
+    .field {
+      position: fixed;
+      inset: -15%;
+      z-index: 0;
+      pointer-events: none;
+      background: var(--av-powder);
+    }
+    .blob {
+      position: absolute;
+      filter: blur(var(--blur-field));
+      will-change: transform;
+    }
+    .b-butter {
+      top: -12%; left: -12%;
+      width: 80%; height: 78%;
+      background: radial-gradient(ellipse at 45% 45%, var(--av-butter), #bda87d 70%, transparent 100%);
+      animation: drift1 var(--dur-drift) var(--ease-soft) infinite alternate;
+    }
+    .b-magenta {
+      top: -6%; right: -14%;
+      width: 82%; height: 80%;
+      background: radial-gradient(ellipse at 55% 50%, var(--av-magenta), #ac8ba0 68%, transparent 100%);
+      animation: drift2 calc(var(--dur-drift) * 1.3) var(--ease-soft) infinite alternate;
+    }
+    .b-green {
+      bottom: -14%; left: -10%;
+      width: 80%; height: 78%;
+      background: radial-gradient(ellipse at 50% 50%, var(--av-green), #869e8a 70%, transparent 100%);
+      animation: drift3 calc(var(--dur-drift) * 1.15) var(--ease-soft) infinite alternate;
+    }
+    .b-peri {
+      bottom: -10%; right: -10%;
+      width: 78%; height: 76%;
+      background: radial-gradient(ellipse at 50% 50%, var(--av-periwinkle), #8b82a5 68%, transparent 100%);
+      animation: drift4 calc(var(--dur-drift) * 1.4) var(--ease-soft) infinite alternate;
+    }
+    .b-butter2 {
+      bottom: -12%; left: 24%;
+      width: 48%; height: 54%;
+      background: radial-gradient(ellipse at 50% 50%, var(--av-butter), #bda87d 65%, transparent 100%);
+      animation: drift2 calc(var(--dur-drift) * 1.25) var(--ease-soft) infinite alternate;
+    }
+    .b-center {
+      top: 22%; left: 22%;
+      width: 58%; height: 58%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(194,151,176,0.5), transparent 75%);
+      animation: drift1 calc(var(--dur-drift) * 1.5) var(--ease-soft) infinite alternate;
+    }
+
+    @keyframes drift1 { to { transform: translate(7%, 5%) scale(1.14); } }
+    @keyframes drift2 { to { transform: translate(-6%, 7%) scale(1.11); } }
+    @keyframes drift3 { to { transform: translate(6%, -5%) scale(1.16); } }
+    @keyframes drift4 { to { transform: translate(-7%, -4%) scale(1.1); } }
+
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: var(--grain-opacity);
+      mix-blend-mode: overlay;
+      background-image: var(--grain-url);
+    }
+
+    /* ============ LAYOUT SHELL ============ */
+    .page {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ---- Top nav ---- */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: var(--z-overlay);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-5) var(--gutter);
+      mix-blend-mode: normal;
+    }
+    .nav-mark {
+      font: var(--role-label);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--av-cream-hi);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-semibold);
+    }
+    .nav-links {
+      display: flex;
+      gap: var(--space-5);
+      align-items: center;
+    }
+    .nav-links a {
+      font-size: var(--text-sm);
+      color: rgba(251, 247, 239, 0.8);
+      letter-spacing: var(--tracking-wide);
+      transition: color var(--dur-fast) var(--ease-soft);
+    }
+    .nav-links a:hover { color: var(--av-cream-hi); }
+
+    /* ---- HERO ---- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: var(--space-9) var(--gutter);
+    }
+    .hero-logo-slot {
+      width: 120px;
+      height: 120px;
+      margin-bottom: var(--space-6);
+      border-radius: var(--radius-blob);
+      background: rgba(251, 247, 239, 0.12);
+      backdrop-filter: blur(8px);
+      border: 1px dashed rgba(251, 247, 239, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-xs);
+      color: rgba(251, 247, 239, 0.6);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+    .hero-mark {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: var(--weight-regular);
+      font-size: clamp(2.6rem, 8.5vw, 5.5rem);
+      line-height: 1.15;
+      color: var(--av-cream-hi);
+      text-transform: lowercase;
+      letter-spacing: 0.02em;
+      text-shadow: 0 4px 60px rgba(36, 31, 43, 0.35);
+      max-width: 90vw;
+    }
+    .hero-tag {
+      margin-top: var(--space-6);
+      font-size: var(--text-sm);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: rgba(251, 247, 239, 0.85);
+      font-weight: var(--weight-medium);
+    }
+    .hero-scroll {
+      margin-top: var(--space-9);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wide);
+      color: rgba(251, 247, 239, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+      animation: bob 2.4s var(--ease-soft) infinite;
+    }
+    @keyframes bob { 50% { transform: translateY(6px); } }
+
+    /* ---- CONTENT PANELS (on cream, readable) ---- */
+    .panel {
+      position: relative;
+      background: var(--surface-page);
+      color: var(--text-primary);
+    }
+    .panel-inner {
+      max-width: var(--container-base);
+      margin: 0 auto;
+      padding: var(--space-10) var(--gutter);
+    }
+
+    /* soft color-field wash bleeding into top of panel */
+    .panel::before {
+      content: "";
+      position: absolute;
+      top: -80px; left: 0; right: 0;
+      height: 80px;
+      background: linear-gradient(180deg, transparent, var(--surface-page));
+      z-index: 1;
+    }
+
+    .eyebrow {
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--av-magenta-deep);
+      font-weight: var(--weight-semibold);
+      margin-bottom: var(--space-4);
+    }
+
+    /* ---- ABOUT ---- */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-7);
+      max-width: var(--container-text);
+    }
+    .about-lead {
+      font-family: var(--font-serif);
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      line-height: 1.25;
+      color: var(--text-primary);
+      font-weight: var(--weight-regular);
+    }
+    .about-lead em {
+      font-style: italic;
+      color: var(--av-magenta-deep);
+    }
+    .about-body {
+      font-size: var(--text-md);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+      max-width: var(--container-text);
+    }
+    .about-body p + p { margin-top: var(--space-5); }
+
+    /* ---- WHAT I MAKE (chips) ---- */
+    .makes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      margin-top: var(--space-7);
+    }
+    .make-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-5);
+      border-radius: var(--radius-pill);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+      background:
+        linear-gradient(var(--surface-card), var(--surface-card)) padding-box,
+        var(--gradient-opal) border-box;
+      border: 1.5px solid transparent;
+      box-shadow: var(--shadow-sm);
+    }
+    .make-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+
+    /* ---- COMING SOON ---- */
+    .soon {
+      position: relative;
+      overflow: hidden;
+      background: var(--av-powder);
+      color: var(--text-primary);
+      text-align: center;
+    }
+    .soon-field {
+      position: absolute;
+      inset: -20%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .soon-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--container-narrow);
+      margin: 0 auto;
+      padding: var(--space-11) var(--gutter);
+    }
+    .soon-title {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(2.5rem, 7vw, 4rem);
+      line-height: 1.1;
+      color: var(--text-primary);
+      margin-bottom: var(--space-5);
+    }
+    .soon-body {
+      font-size: var(--text-md);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+    }
+    .soon-note {
+      margin-top: var(--space-7);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+
+    /* ---- FOOTER / SOCIALS ---- */
+    footer {
+      position: relative;
+      background: var(--surface-page);
+      padding: var(--space-9) var(--gutter) var(--space-7);
+      text-align: center;
+    }
+    .foot-mark {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: var(--text-2xl);
+      color: var(--text-primary);
+      text-transform: lowercase;
+      margin-bottom: var(--space-6);
+    }
+    .socials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      justify-content: center;
+      margin-bottom: var(--space-7);
+    }
+    .social {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-5);
+      border-radius: var(--radius-pill);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+      color: var(--text-primary);
+      background:
+        linear-gradient(var(--surface-card), var(--surface-card)) padding-box,
+        var(--gradient-opal) border-box;
+      border: 1.5px solid transparent;
+      transition: transform var(--dur-fast) var(--ease-bloom),
+                  box-shadow var(--dur-fast) var(--ease-soft);
+    }
+    .social:hover {
+      transform: var(--hover-lift);
+      box-shadow: var(--hover-glow);
+    }
+    .social:active { transform: var(--press-sink); }
+    .social img { width: 18px; height: 18px; display: block; }
+    .foot-fine {
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    /* Reveal-on-scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--dur-slow) var(--ease-out),
+                  transform var(--dur-slow) var(--ease-out);
+    }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 640px) {
+      .nav-links { gap: var(--space-4); }
+      .nav-links a.hide-sm { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Color-field backdrop -->
+  <div class="field" aria-hidden="true">
+    <div class="blob b-butter"></div>
+    <div class="blob b-magenta"></div>
+    <div class="blob b-green"></div>
+    <div class="blob b-peri"></div>
+    <div class="blob b-butter2"></div>
+    <div class="blob b-center"></div>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="page">
+
+    <!-- NAV -->
+    <nav>
+      <div class="nav-mark">Aventurine Dream</div>
+      <div class="nav-links">
+        <a href="#about" class="hide-sm">about</a>
+        <a href="#soon">what's coming</a>
+        <a href="#connect">find me</a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero" data-screen-label="Hero">
+      <div class="hero-logo-slot"><img src="assets/logo-temp.svg" alt="Aventurine Dream logo" width="120" height="120"></div>
+      <h1 class="hero-mark">aventurine dream</h1>
+      <div class="hero-tag">chaotic &amp; sincere</div>
+      <div class="hero-scroll">
+        <span>wander in</span>
+        <span>↓</span>
+      </div>
+    </header>
+
+    <!-- ABOUT -->
+    <section class="panel" id="about" data-screen-label="About">
+      <div class="panel-inner">
+        <div class="eyebrow reveal">who's making this</div>
+        <div class="about-grid">
+          <p class="about-lead reveal">
+            I make things across screens — <em>movement, play, image, sound</em> — and the joy of making them is the whole point.
+          </p>
+          <div class="about-body reveal">
+            <p>
+              I'm a full-time creator working in digital mixed media. Workout videos edited like music videos. A weekly gaming stream and a weekly art stream. Experimental shorts when the mood takes me. Music, eventually, woven through all of it.
+            </p>
+            <p>
+              The register swings — playful, earnest, a little cryptic, sometimes dark — and the swing is the personality. Soft surface, intense substance. My community, the Lil Big Bang Group, is a warm place to land: trans- and neurodivergent-affirming by design, chaos kept to the aesthetic and never the experience.
+            </p>
+          </div>
+        </div>
+
+        <div class="makes reveal">
+          <span class="make-chip"><span class="make-dot" style="background:var(--av-green);"></span>movement videos</span>
+          <span class="make-chip"><span class="make-dot" style="background:var(--av-magenta);"></span>gaming stream</span>
+          <span class="make-chip"><span class="make-dot" style="background:var(--av-butter);"></span>art stream</span>
+          <span class="make-chip"><span class="make-dot" style="background:var(--av-periwinkle);"></span>experimental shorts</span>
+          <span class="make-chip"><span class="make-dot" style="background:var(--av-mauve);"></span>music, soon</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMING SOON -->
+    <section class="soon" id="soon" data-screen-label="Coming Soon">
+      <div class="soon-field" aria-hidden="true">
+        <div class="blob b-magenta" style="animation-duration: 20s;"></div>
+        <div class="blob b-green" style="animation-duration: 24s;"></div>
+        <div class="blob b-butter2" style="animation-duration: 22s;"></div>
+      </div>
+      <div class="soon-inner">
+        <div class="eyebrow reveal" style="color: var(--av-butter-deep);">still blooming</div>
+        <h2 class="soon-title reveal">The full world is on its way.</h2>
+        <p class="soon-body reveal">
+          Right now this is a doorway, not a house. Prints, high-quality video downloads, and commissions will find their home here in time. For now — come wander, come watch, come make noise in the group.
+        </p>
+        <div class="soon-note reveal">a mirror of souls · consciousness echoes</div>
+      </div>
+    </section>
+
+    <!-- FOOTER / CONNECT -->
+    <footer id="connect" data-screen-label="Connect">
+      <div class="foot-mark reveal">aventurine dream</div>
+      <div class="socials reveal">
+        <a class="social" href="#" aria-label="Twitch">
+          <img src="https://cdn.simpleicons.org/twitch/241f2b" alt="" width="18" height="18">
+          Twitch
+        </a>
+        <a class="social" href="#" aria-label="YouTube">
+          <img src="https://cdn.simpleicons.org/youtube/241f2b" alt="" width="18" height="18">
+          YouTube
+        </a>
+        <a class="social" href="#" aria-label="Reddit">
+          <img src="https://cdn.simpleicons.org/reddit/241f2b" alt="" width="18" height="18">
+          Reddit
+        </a>
+        <a class="social" href="#" aria-label="Bluesky">
+          <img src="https://cdn.simpleicons.org/bluesky/241f2b" alt="" width="18" height="18">
+          Bluesky
+        </a>
+        <a class="social" href="#" aria-label="TikTok">
+          <img src="https://cdn.simpleicons.org/tiktok/241f2b" alt="" width="18" height="18">
+          TikTok
+        </a>
+        <a class="social" href="#" aria-label="Fansly">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-10-9.8C.6 8 2 4.5 5.2 3.8 7.4 3.3 9.5 4.2 12 6.8c2.5-2.6 4.6-3.5 6.8-3 3.2.7 4.6 4.2 3.2 7.4C19.5 16.4 12 21 12 21z"/></svg>
+          Fansly
+        </a>
+      </div>
+      <div class="foot-fine">aventurinedream.art — let your mind off leash.</div>
+    </footer>
+
+  </div>
+
+  <script>
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach((el, i) => {
+      el.style.transitionDelay = (i % 4 * 80) + 'ms';
+      io.observe(el);
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!-- @dsCard group="Colors" viewport="700x170" subtitle="Aliases in use: surface, text, and accent roles" name="Semantic Roles" -->
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--font-body);background:var(--surface-shell);display:flex;align-items:center;justify-content:center;height:170px;}
+  .card{background:var(--surface-card);border-radius:var(--radius-lg);padding:20px 26px;box-shadow:var(--shadow-md);display:flex;flex-direction:column;gap:8px;width:420px;}
+  .t1{font:var(--role-heading);color:var(--text-primary);font-size:22px;}
+  .t2{font-size:13px;color:var(--text-secondary);line-height:1.5;}
+  .t3{font-size:11px;color:var(--text-tertiary);letter-spacing:0.08em;text-transform:uppercase;}
+  .btn{margin-top:6px;align-self:flex-start;background:var(--accent-primary);color:#1e2e20;font-size:12px;font-weight:600;padding:8px 16px;border-radius:var(--radius-pill);}
+</style></head>
+<body>
+<div class="card">
+  <div class="t1">surface-card + text-primary</div>
+  <div class="t2">text-secondary for supporting copy, set on surface-card.</div>
+  <div class="t3">text-tertiary \u00b7 meta label</div>
+  <div class="btn">accent-primary</div>
+</div>
+</body></html>

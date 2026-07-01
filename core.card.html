@@ -1,0 +1,67 @@
+<!-- @dsCard group="Components" viewport="700x520" name="Core" subtitle="Button, Chip, SocialLink, Card, Eyebrow, SectionHeading" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: var(--surface-shell); font-family: var(--font-body); padding: 24px 28px; }
+  .row { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:20px; }
+  .group-label { font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color: var(--text-tertiary); margin-bottom:8px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { Button, Chip, SocialLink, Card, Eyebrow, SectionHeading } = window.AventurineDreamDesignSystem_bf4c8b;
+
+const TwitchIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 2 3 6v13h4v3h3l3-3h4l6-6V2H4zm16 10-3 3h-4l-3 3v-3H7V4h13v8zM15 7h2v5h-2V7zm-5 0h2v5h-2V7z"/></svg>
+);
+
+function Demo() {
+  return (
+    <div>
+      <div className="group-label">Button — primary / secondary / ghost / disabled</div>
+      <div className="row">
+        <Button variant="primary">wander in</Button>
+        <Button variant="secondary">find me</Button>
+        <Button variant="ghost">learn more</Button>
+        <Button variant="primary" disabled>disabled</Button>
+        <Button variant="secondary" size="sm">small</Button>
+      </div>
+
+      <div className="group-label">Chip — category tags with color dots</div>
+      <div className="row">
+        <Chip dotColor="var(--av-green)">movement videos</Chip>
+        <Chip dotColor="var(--av-magenta)">gaming stream</Chip>
+        <Chip dotColor="var(--av-butter)">art stream</Chip>
+      </div>
+
+      <div className="group-label">SocialLink — opal pill, lifts on hover</div>
+      <div className="row">
+        <SocialLink label="Twitch" icon={<TwitchIcon />} />
+        <SocialLink label="Bluesky" icon={<TwitchIcon />} />
+      </div>
+
+      <div className="group-label">Eyebrow + SectionHeading</div>
+      <Card elevation="md" padding="24px">
+        <Eyebrow color="var(--av-butter-deep)">still blooming</Eyebrow>
+        <div style={{height:8}} />
+        <SectionHeading>The full world is on its way.</SectionHeading>
+        <div style={{height:10}} />
+        <SectionHeading italic level={3}>a mirror of souls</SectionHeading>
+      </Card>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!-- @dsCard group="Colors" viewport="700x170" subtitle="Powder blue base + opal iridescent trim, used to avoid negative space" name="Powder & Opal" -->
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--font-body);background:var(--av-powder);display:flex;align-items:center;justify-content:center;gap:20px;height:170px;}
+  .chip{
+    padding:12px 22px;border-radius:var(--radius-pill);font-size:13px;font-weight:600;color:var(--text-primary);
+    background:linear-gradient(var(--surface-card),var(--surface-card)) padding-box, var(--gradient-opal) border-box;
+    border:1.5px solid transparent;
+  }
+  .label{font-size:11px;color:var(--text-secondary);letter-spacing:0.06em;text-transform:uppercase;}
+  .col{display:flex;flex-direction:column;align-items:center;gap:10px;}
+</style></head>
+<body>
+  <div class="col"><div class="label">powder blue</div><div class="chip" style="background:var(--surface-card);border:1.5px solid var(--border-soft);">base wash</div></div>
+  <div class="col"><div class="label">opal trim</div><div class="chip">chip / button</div></div>
+  <div class="col"><div class="label">opal trim</div><div class="chip">social pill</div></div>
+</body></html>

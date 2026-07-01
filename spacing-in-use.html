@@ -1,0 +1,24 @@
+<!-- @dsCard group="Spacing" viewport="700x210" subtitle="Card padding + gap tokens applied together" name="Spacing In Use" -->
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--font-body);background:var(--surface-shell);height:210px;display:flex;align-items:center;justify-content:center;}
+  .card{background:var(--surface-card);border-radius:var(--radius-lg);padding:var(--space-6);box-shadow:var(--shadow-md);display:flex;flex-direction:column;gap:var(--space-3);width:380px;}
+  .tag{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);}
+  .title{font-size:18px;font-weight:700;color:var(--text-primary);}
+  .chips{display:flex;gap:var(--space-2);}
+  .chip{background:var(--av-green-tint);color:#1e2e20;font-size:11px;padding:6px 12px;border-radius:var(--radius-pill);}
+</style></head>
+<body>
+  <div class="card">
+    <div class="tag">padding: space-6 \u00b7 gap: space-3</div>
+    <div class="title">A card, breathing</div>
+    <div class="chips">
+      <div class="chip" style="gap:0;">chip</div>
+      <div class="chip" style="background:var(--av-magenta-tint);color:#2e1c27;">chip</div>
+      <div class="chip" style="background:var(--av-butter-tint);color:#302710;">chip</div>
+    </div>
+  </div>
+</body></html>

@@ -1,0 +1,16 @@
+<!-- @dsCard group="Brand" viewport="700x170" subtitle="Subtle film grain overlay, 7% opacity, overlay blend" name="Grain Texture" -->
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:170px;overflow:hidden;}
+  .base{position:absolute;inset:0;background:linear-gradient(120deg, var(--av-magenta), var(--av-periwinkle));}
+  .grain{position:absolute;inset:0;opacity:var(--grain-opacity);mix-blend-mode:overlay;background-image:var(--grain-url);}
+  .label{position:relative;z-index:2;color:var(--av-cream-hi);font-family:var(--font-mono);font-size:11px;padding:14px;}
+</style></head>
+<body>
+  <div class="base"></div>
+  <div class="grain"></div>
+  <div class="label">grain-opacity: 0.07 \u00b7 mix-blend-mode: overlay</div>
+</body></html>

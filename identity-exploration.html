@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aventurine Dream — Vibe Frame</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0a0a0a;
+    }
+    body {
+      font-family: 'Georgia', 'Garamond', serif;
+      color: #fff;
+    }
+    .viewport {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+    }
+    section {
+      min-width: 100vw;
+      height: 100vh;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .direction-label {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      z-index: 20;
+    }
+
+    /* ============ VIBE FRAME: Hybrid Drifting Fields ============ */
+    .dir-a {
+      background: #15121a;
+    }
+    .fields-a {
+      position: absolute;
+      inset: -10%;
+    }
+    /* Grayed-pastel bands that drift and overlap organically */
+    .band {
+      position: absolute;
+      left: -10%;
+      right: -10%;
+      filter: blur(40px);
+    }
+    .band-1 {
+      top: -5%;
+      height: 42%;
+      background: radial-gradient(ellipse 90% 120% at 45% 60%, #cbb98a 0%, #b8a67d 45%, transparent 80%);
+    }
+    .band-2 {
+      top: 22%;
+      height: 45%;
+      background: radial-gradient(ellipse 100% 110% at 60% 45%, #c297b0 0%, #a8899e 50%, transparent 82%);
+    }
+    .band-3 {
+      top: 48%;
+      height: 42%;
+      background: radial-gradient(ellipse 95% 115% at 40% 50%, #9f96b8 0%, #8b83a3 50%, transparent 82%);
+    }
+    .band-4 {
+      bottom: -8%;
+      height: 45%;
+      background: radial-gradient(ellipse 100% 120% at 55% 40%, #99b59d 0%, #859e88 50%, transparent 82%);
+    }
+    .grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.07;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      z-index: 10;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .content-a {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 15;
+      text-align: center;
+    }
+    .wordmark-a {
+      font-size: 68px;
+      font-weight: 300;
+      letter-spacing: 6px;
+      color: #f5efe4;
+      text-transform: lowercase;
+      font-style: italic;
+      text-shadow: 0 4px 40px rgba(0,0,0,0.4);
+    }
+    .tagline-a {
+      font-size: 15px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(245, 239, 228, 0.7);
+      margin-top: 24px;
+      font-style: normal;
+      font-weight: 400;
+    }
+
+    /* ============ SECOND VARIANT: More overlap/bloom ============ */
+    .dir-b {
+      background: #b0a288;
+    }
+    .blocks-b {
+      position: absolute;
+      inset: -15%;
+    }
+    .block {
+      position: absolute;
+      filter: blur(60px);
+    }
+    .blk-butter {
+      top: -15%;
+      left: -15%;
+      width: 85%;
+      height: 80%;
+      background: radial-gradient(ellipse at 45% 45%, #cbb98a, #bda87d 70%, transparent 100%);
+    }
+    .blk-magenta {
+      top: -5%;
+      right: -15%;
+      width: 85%;
+      height: 82%;
+      background: radial-gradient(ellipse at 55% 50%, #c297b0, #ac8ba0 68%, transparent 100%);
+    }
+    .blk-green {
+      bottom: -15%;
+      left: -12%;
+      width: 82%;
+      height: 80%;
+      background: radial-gradient(ellipse at 50% 50%, #99b59d, #869e8a 70%, transparent 100%);
+    }
+    .blk-peri {
+      bottom: -10%;
+      right: -12%;
+      width: 80%;
+      height: 78%;
+      background: radial-gradient(ellipse at 50% 50%, #9f96b8, #8b82a5 68%, transparent 100%);
+    }
+    .blk-center {
+      top: 20%;
+      left: 20%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(194, 151, 176, 0.5), transparent 75%);
+    }
+    .blk-butter2 {
+      bottom: -12%;
+      left: 22%;
+      width: 50%;
+      height: 55%;
+      background: radial-gradient(ellipse at 50% 50%, #cbb98a, #bda87d 65%, transparent 100%);
+    }
+    .content-b {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 15;
+      text-align: center;
+    }
+    .wordmark-b {
+      font-size: 64px;
+      font-weight: 300;
+      letter-spacing: 5px;
+      color: #fbf7ef;
+      text-transform: lowercase;
+      font-style: italic;
+      text-shadow: 0 4px 60px rgba(60,40,60,0.4);
+    }
+    .tagline-b {
+      font-size: 14px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(251, 247, 239, 0.85);
+      margin-top: 22px;
+      font-weight: 400;
+      text-shadow: 0 2px 30px rgba(60,40,60,0.3);
+    }
+
+    /* ============ PALETTE STRIP ============ */
+    .dir-pal {
+      background: #14111a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .pal-title {
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 50px;
+    }
+    .swatches {
+      display: flex;
+      gap: 0;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    }
+    .swatch {
+      width: 150px;
+      height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 18px;
+    }
+    .sw-name {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .sw-hex {
+      font-size: 11px;
+      font-family: monospace;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="viewport">
+
+    <!-- VIBE FRAME A: Hybrid Drifting Fields -->
+    <section class="dir-a" data-screen-label="A-Drifting Fields">
+      <div class="direction-label">A — Drifting Fields</div>
+      <div class="fields-a">
+        <div class="band band-1"></div>
+        <div class="band band-2"></div>
+        <div class="band band-3"></div>
+        <div class="band band-4"></div>
+      </div>
+      <div class="grain"></div>
+      <div class="content-a">
+        <div class="wordmark-a">aventurine</div>
+        <div class="tagline-a">chaotic &amp; sincere</div>
+      </div>
+    </section>
+
+    <!-- VIBE FRAME B: More Bloom/Overlap -->
+    <section class="dir-b" data-screen-label="B-Bloom Overlap">
+      <div class="direction-label">B — Bloom Overlap</div>
+      <div class="blocks-b">
+        <div class="block blk-butter"></div>
+        <div class="block blk-magenta"></div>
+        <div class="block blk-green"></div>
+        <div class="block blk-peri"></div>
+        <div class="block blk-butter2"></div>
+        <div class="block blk-center"></div>
+      </div>
+      <div class="grain"></div>
+      <div class="content-b">
+        <div class="wordmark-b">aventurine</div>
+        <div class="tagline-b">a mirror of souls</div>
+      </div>
+    </section>
+
+    <!-- PALETTE -->
+    <section class="dir-pal" data-screen-label="Palette">
+      <div class="direction-label">Palette — Dusty Pastels</div>
+      <div class="pal-title">the grayed pastel palette</div>
+      <div class="swatches">
+        <div class="swatch" style="background: #99b59d;">
+          <div class="sw-name" style="color:#1e2e20;">Aventurine</div>
+          <div class="sw-hex" style="color:#1e2e20;">#99B59D</div>
+        </div>
+        <div class="swatch" style="background: #c297b0;">
+          <div class="sw-name" style="color:#2e1c27;">Magenta</div>
+          <div class="sw-hex" style="color:#2e1c27;">#C297B0</div>
+        </div>
+        <div class="swatch" style="background: #cbb98a;">
+          <div class="sw-name" style="color:#302710;">Butter</div>
+          <div class="sw-hex" style="color:#302710;">#CBB98A</div>
+        </div>
+        <div class="swatch" style="background: #9f96b8;">
+          <div class="sw-name" style="color:#1c1730;">Periwinkle</div>
+          <div class="sw-hex" style="color:#1c1730;">#9F96B8</div>
+        </div>
+        <div class="swatch" style="background: #8b83a3;">
+          <div class="sw-name" style="color:#171326;">Mauve</div>
+          <div class="sw-hex" style="color:#171326;">#8B83A3</div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>
