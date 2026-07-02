@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#B3CCD6">
+  <link rel="stylesheet" href="_ds/aventurine-dream-design-system-bf4c8bf4-77d8-40d0-8d19-1289f0e1c132/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/aventurine-dream-design-system-bf4c8bf4-77d8-40d0-8d19-1289f0e1c132/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/aventurine-dream-design-system-bf4c8bf4-77d8-40d0-8d19-1289f0e1c132/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/aventurine-dream-design-system-bf4c8bf4-77d8-40d0-8d19-1289f0e1c132/tokens/effects.css">
+  <link rel="stylesheet" href="_ds/aventurine-dream-design-system-bf4c8bf4-77d8-40d0-8d19-1289f0e1c132/styles.css">
+  <script src="_ds/aventurine-dream-design-system-bf4c8bf4-77d8-40d0-8d19-1289f0e1c132/_ds_bundle.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; overscroll-behavior: none; background: var(--av-powder, #B3CCD6); }
+    image-slot { display: block; width: 100%; height: 100%; }
+    ::selection { background: var(--av-magenta); color: var(--av-cream-hi); }
+    @keyframes drift1 { to { transform: translate(7%, 5%) scale(1.14); } }
+    @keyframes drift2 { to { transform: translate(-6%, 7%) scale(1.11); } }
+    @keyframes drift3 { to { transform: translate(6%, -5%) scale(1.16); } }
+    @keyframes drift4 { to { transform: translate(-7%, -4%) scale(1.1); } }
+  </style>
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+    window.THREE = THREE;
+    // Rounded box without the addons module (avoids bare 'three' import specifier):
+    // segmented BoxGeometry with vertices projected onto a radius-r shell.
+    window.RoundedBoxGeometry = function (w, h, d, seg, r) {
+      const s = Math.max(2, Math.floor(seg || 2) * 2);
+      const geo = new THREE.BoxGeometry(w, h, d, s, s, s);
+      const pos = geo.attributes.position;
+      const nor = geo.attributes.normal;
+      const hx = Math.max(0, w / 2 - r), hy = Math.max(0, h / 2 - r), hz = Math.max(0, d / 2 - r);
+      const v = new THREE.Vector3(), c = new THREE.Vector3(), dir = new THREE.Vector3();
+      for (let i = 0; i < pos.count; i++) {
+        v.fromBufferAttribute(pos, i);
+        c.set(
+          Math.max(-hx, Math.min(hx, v.x)),
+          Math.max(-hy, Math.min(hy, v.y)),
+          Math.max(-hz, Math.min(hz, v.z))
+        );
+        dir.subVectors(v, c);
+        if (dir.lengthSq() > 1e-12) {
+          dir.normalize();
+          pos.setXYZ(i, c.x + dir.x * r, c.y + dir.y * r, c.z + dir.z * r);
+          nor.setXYZ(i, dir.x, dir.y, dir.z);
+        }
+      }
+      pos.needsUpdate = true;
+      nor.needsUpdate = true;
+      return geo;
+    };
+  </script>
+</helmet>
+
+<div style="position: fixed; inset: 0; overflow: hidden; font-family: var(--font-body);" data-screen-label="Crate Stage">
+
+  <!-- color-field backdrop (from v1) -->
+  <div aria-hidden="true" style="position: fixed; inset: -15%; z-index: 0; pointer-events: none; background: var(--av-powder);">
+    <div style="position: absolute; filter: blur(var(--blur-field, 50px)); will-change: transform; top: -12%; left: -12%; width: 80%; height: 78%; background: radial-gradient(ellipse at 45% 45%, var(--av-butter), #bda87d 70%, transparent 100%); animation: drift1 var(--dur-drift, 14s) var(--ease-soft, ease) infinite alternate;"></div>
+    <div style="position: absolute; filter: blur(var(--blur-field, 50px)); will-change: transform; top: -6%; right: -14%; width: 82%; height: 80%; background: radial-gradient(ellipse at 55% 50%, var(--av-magenta), #ac8ba0 68%, transparent 100%); animation: drift2 calc(var(--dur-drift, 14s) * 1.3) var(--ease-soft, ease) infinite alternate;"></div>
+    <div style="position: absolute; filter: blur(var(--blur-field, 50px)); will-change: transform; bottom: -14%; left: -10%; width: 80%; height: 78%; background: radial-gradient(ellipse at 50% 50%, var(--av-green), #869e8a 70%, transparent 100%); animation: drift3 calc(var(--dur-drift, 14s) * 1.15) var(--ease-soft, ease) infinite alternate;"></div>
+    <div style="position: absolute; filter: blur(var(--blur-field, 50px)); will-change: transform; bottom: -10%; right: -10%; width: 78%; height: 76%; background: radial-gradient(ellipse at 50% 50%, var(--av-periwinkle), #8b82a5 68%, transparent 100%); animation: drift4 calc(var(--dur-drift, 14s) * 1.4) var(--ease-soft, ease) infinite alternate;"></div>
+    <div style="position: absolute; filter: blur(var(--blur-field, 50px)); will-change: transform; bottom: -12%; left: 24%; width: 48%; height: 54%; background: radial-gradient(ellipse at 50% 50%, var(--av-butter), #bda87d 65%, transparent 100%); animation: drift2 calc(var(--dur-drift, 14s) * 1.25) var(--ease-soft, ease) infinite alternate;"></div>
+    <div style="position: absolute; filter: blur(var(--blur-field, 50px)); will-change: transform; top: 22%; left: 22%; width: 58%; height: 58%; background: radial-gradient(ellipse at 50% 50%, rgba(194, 151, 176, 0.5), transparent 75%); animation: drift1 calc(var(--dur-drift, 14s) * 1.5) var(--ease-soft, ease) infinite alternate;"></div>
+  </div>
+
+  <!-- three.js stage -->
+  <div id="av-stage" style="position: fixed; inset: 0; z-index: 2; touch-action: none;"></div>
+
+  <!-- film grain above the 3D scene -->
+  <div aria-hidden="true" style="position: fixed; inset: 0; z-index: 3; pointer-events: none; opacity: var(--grain-opacity, 0.07); mix-blend-mode: overlay; background-image: var(--grain-url);"></div>
+
+  <!-- hero: cloud + wordmark + tag (replaces the v1 stills with the crate below) -->
+  <div id="av-hero" data-screen-label="Hero" style="position: fixed; top: 0; left: 0; right: 0; z-index: 5; display: flex; flex-direction: column; align-items: center; gap: min(10px, 1.4vh); padding-top: min(74px, 9vh); pointer-events: none;">
+    <div id="av-cloud-wrap" style="pointer-events: {{ chromePE }}; display: flex; align-items: center; justify-content: center;">
+      <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="cloud-logo" fit="contain" shape="rect" placeholder="drop the cloud logo" hint-size="250px,160px" style="width: 299px; height: 179px"></x-import>
+    </div>
+    <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="wordmark" fit="contain" shape="rect" placeholder="drop the wordmark" hint-size="300px,64px" style="width: min(62vw, 330px, 46vh); height: clamp(38px, min(9vw, 8vh), 64px);"></x-import><div style="pointer-events: {{ chromePE }}; display: flex; align-items: center; justify-content: center;">
+      
+    </div>
+    <div style="font-size: var(--text-sm, 0.875rem); letter-spacing: var(--tracking-wider, 0.14em); text-transform: uppercase; color: rgba(251, 247, 239, 0.85); font-weight: var(--weight-medium, 500); text-shadow: 0 2px 24px rgba(36, 31, 43, 0.25); margin-top: 4px;">Mixed Media VFX Expressionism</div>
+  </div>
+
+  <!-- nav -->
+  <nav id="av-nav" style="position: fixed; top: 0; left: 0; right: 0; z-index: 8; display: flex; align-items: center; justify-content: space-between; padding: 20px clamp(18px, 4vw, 40px); pointer-events: none;">
+    <div style="pointer-events: none; font-size: var(--text-sm, 0.875rem); letter-spacing: var(--tracking-wider, 0.14em); text-transform: uppercase; color: var(--av-cream-hi, #FBF7EF); font-weight: var(--weight-semibold, 600);">Aventurine Dream</div>
+    <div style="pointer-events: {{ chromePE }};">
+      <x-import component-from-global-scope="AventurineDreamDesignSystem_bf4c8b.Button" variant="secondary" size="sm" on-click="{{ toggleFind }}" hint-size="96px,36px">find me</x-import>
+    </div>
+  </nav>
+
+  <!-- find-me popover -->
+  <sc-if value="{{ findOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; top: 66px; right: clamp(14px, 3vw, 36px); z-index: 21; background: var(--surface-card, #F5EFE4); border-radius: var(--radius-lg, 20px); box-shadow: var(--shadow-lg, 0 20px 50px rgba(36,31,43,0.25)); padding: 12px; display: flex; flex-direction: column; gap: 8px; align-items: stretch;">
+      <sc-for list="{{ socials }}" as="s" hint-placeholder-count="6">
+        <x-import component-from-global-scope="AventurineDreamDesignSystem_bf4c8b.SocialLink" dc-props="{{ s }}" hint-size="150px,42px"></x-import>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <!-- HUD -->
+  <div id="av-hud" style="position: fixed; left: 0; right: 0; bottom: 22px; z-index: 8; display: flex; flex-direction: column; align-items: center; gap: 6px; pointer-events: none;">
+    <div id="av-counter" style="font-size: 15px; color: var(--av-cream-hi, #FBF7EF); font-variant-numeric: tabular-nums; letter-spacing: 0.08em; text-shadow: 0 2px 18px rgba(36, 31, 43, 0.35);">{{ counterText }}</div>
+    <div id="av-hint" style="font-size: 12px; color: rgba(251, 247, 239, 0.8); letter-spacing: 0.06em; text-shadow: 0 2px 18px rgba(36, 31, 43, 0.3);">{{ hintText }}</div>
+  </div>
+
+  <!-- focused-record caption + back -->
+  <sc-if value="{{ inFocus }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; left: 0; right: 0; bottom: 88px; z-index: 20; display: flex; flex-direction: column; align-items: center; gap: 5px; pointer-events: none; text-align: center; padding: 0 16px;">
+      <div style="font-family: var(--font-serif, 'Instrument Serif', serif); font-style: italic; font-size: clamp(1.5rem, 4vw, 2rem); color: var(--av-cream-hi, #FBF7EF); text-shadow: 0 3px 30px rgba(36, 31, 43, 0.55);">{{ captionTitle }}</div>
+      <div style="font-size: 11px; letter-spacing: var(--tracking-wider, 0.14em); text-transform: uppercase; color: rgba(251, 247, 239, 0.75); text-shadow: 0 2px 18px rgba(36, 31, 43, 0.45);">{{ captionSub }}</div>
+    </div>
+    <div style="position: fixed; left: 0; right: 0; bottom: 24px; z-index: 22; display: flex; justify-content: center; pointer-events: none;">
+      <div style="pointer-events: auto;">
+        <x-import component-from-global-scope="AventurineDreamDesignSystem_bf4c8b.Button" variant="secondary" size="sm" on-click="{{ onBack }}" hint-size="160px,36px">back to the crate</x-import>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;crateColor&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#C23B2E&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#C23B2E&quot;, &quot;#9F96B8&quot;, &quot;#99B59D&quot;, &quot;#38322C&quot;], &quot;section&quot;: &quot;scene&quot; },
+  &quot;rainDensity&quot;: { &quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 520, &quot;min&quot;: 120, &quot;max&quot;: 1400, &quot;step&quot;: 20, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;scene&quot; },
+  &quot;staticIntensity&quot;: { &quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 1, &quot;min&quot;: 0.4, &quot;max&quot;: 1.6, &quot;step&quot;: 0.05, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;tv&quot; }
+}">
+class Component extends DCLogic {
+  state = {
+    findOpen: false, inFocus: false, captionTitle: '', captionSub: '',
+    chromeHidden: false,
+    counterText: '01 / 10',
+    hintText: (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(pointer: coarse)').matches)
+      ? 'swipe up + down to flip — tap a record'
+      : 'scroll to flip through the crate — click a record'
+  };
+
+  renderVals() {
+    const icon = (slug) => React.createElement('img', {
+      src: 'https://cdn.simpleicons.org/' + slug + '/241f2b',
+      width: 18, height: 18, alt: '', style: { display: 'block' }
+    });
+    const fanslyIcon = React.createElement('svg', { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'currentColor' },
+      React.createElement('path', { d: 'M6 3h12v4.2h-7.4v3.9h6.6v4.2h-6.6V21H6z' }));
+    return {
+      findOpen: this.state.findOpen,
+      inFocus: this.state.inFocus,
+      captionTitle: this.state.captionTitle,
+      captionSub: this.state.captionSub,
+      chromePE: this.state.chromeHidden ? 'none' : 'auto',
+      counterText: this.state.counterText,
+      hintText: this.state.hintText,
+      toggleFind: () => this.setState(function (s) { return { findOpen: !s.findOpen }; }),
+      onBack: () => this.exitFocus(),
+      socials: [
+        { href: 'https://www.twitch.tv/aventurinedream', label: 'Twitch', icon: icon('twitch') },
+        { href: 'https://www.youtube.com/channel/UCH_u685M0Z1xGSslZf7tQSA', label: 'YouTube', icon: icon('youtube') },
+        { href: 'https://www.reddit.com/user/enGemmaBreak/', label: 'Reddit', icon: icon('reddit') },
+        { href: 'https://bsky.app/profile/aventurinedream.art', label: 'Bluesky', icon: icon('bluesky') },
+        { href: 'https://www.tiktok.com/@aventurinedream', label: 'TikTok', icon: icon('tiktok') },
+        { href: 'https://fansly.com/GemmaGemini', label: 'Fansly', icon: fanslyIcon }
+      ]
+    };
+  }
+
+  componentDidMount() {
+    this._alive = true;
+    this._exit = null;
+    this._boot();
+  }
+
+  componentWillUnmount() {
+    this._alive = false;
+    if (this._raf) cancelAnimationFrame(this._raf);
+    if (this._cleanup) this._cleanup();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!this._live) return;
+    if (prevProps.crateColor !== this.props.crateColor && this._live.crateMat) {
+      this._live.crateMat.color.set(this.props.crateColor || '#C23B2E');
+    }
+    if (prevProps.staticIntensity !== this.props.staticIntensity && this._live.staticU) {
+      this._live.staticU.uIntensity.value = this.props.staticIntensity != null ? this.props.staticIntensity : 1;
+    }
+    if (prevProps.rainDensity !== this.props.rainDensity && this._live.rebuildRain) {
+      this._live.rebuildRain();
+    }
+  }
+
+  exitFocus() { if (this._exit) this._exit(); }
+
+  async _boot() {
+    const t0 = performance.now();
+    while (!(window.THREE && window.RoundedBoxGeometry)) {
+      if (!this._alive) return;
+      if (performance.now() - t0 > 20000) { console.error('three.js failed to load from CDN'); return; }
+      await new Promise(function (r) { setTimeout(r, 60); });
+    }
+    try { await Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 2600); })]); } catch (e) {}
+    if (!this._alive) return;
+    this._initScene();
+  }
+
+  _initScene() {
+    const self = this;
+    const THREE = window.THREE;
+    const RoundedBoxGeometry = window.RoundedBoxGeometry;
+    const host = document.getElementById('av-stage');
+    if (!host) return;
+
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+
+    // ---------- renderer / scene / camera (transparent, sits in the color field) ----------
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, innerWidth / innerHeight, 0.1, 100);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.18;
+    host.appendChild(renderer.domElement);
+
+    // camera rig — fully code-driven (no OrbitControls; tweens own the camera)
+    const camHome = { pos: new THREE.Vector3(0.55, 3.25, 7.5), tgt: new THREE.Vector3(0, 2.52, 0) };
+    function frameCamera() {
+      // keep the crate stacked BELOW the DOM cloud/wordmark: as the hero eats
+      // more of a short viewport, push the scene lower in frame
+      let heroFrac = 0.34;
+      const he = document.getElementById('av-hero');
+      if (he) {
+        const r = he.getBoundingClientRect();
+        if (r.height > 0) heroFrac = r.bottom / innerHeight;
+      }
+      const spanH = 2 * 7.5 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      let ty = 3.05 - spanH * (0.5 - heroFrac - 0.03);
+      ty = Math.max(2.52, Math.min(3.45, ty));
+      camHome.tgt.set(0, ty, 0);
+      camHome.pos.set(0.55, ty + 0.73, 7.5);
+    }
+    frameCamera();
+    const cam = { pos: camHome.pos.clone(), tgt: camHome.tgt.clone() };
+
+    // ---------- lights ----------
+    scene.add(new THREE.AmbientLight(0xfff2e0, 0.55));
+    const key = new THREE.DirectionalLight(0xfff0d8, 1.9);
+    key.position.set(4, 6, 3);
+    key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    key.shadow.camera.left = -5; key.shadow.camera.right = 5;
+    key.shadow.camera.top = 6; key.shadow.camera.bottom = -4;
+    key.shadow.bias = -0.0004;
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0x9f96b8, 0.55);
+    fill.position.set(-5, 3, -2);
+    scene.add(fill);
+    const rim = new THREE.PointLight(0xffcc88, 0.7, 10);
+    rim.position.set(-2, 1.5, 3);
+    scene.add(rim);
+
+    // ---------- ground: shadow catcher only (the page's color field is the world) ----------
+    const floor = new THREE.Mesh(
+      new THREE.CircleGeometry(9, 48),
+      new THREE.ShadowMaterial({ color: 0x241f2b, opacity: 0.3 })
+    );
+    floor.rotation.x = -Math.PI / 2;
+    floor.receiveShadow = true;
+    scene.add(floor);
+
+    // ---------- end table (ported from the crate build) ----------
+    const tableH = 1.73, topR = 1.18, topTh = 0.075;
+    function woodTexture() {
+      const cv = document.createElement('canvas');
+      cv.width = cv.height = 512;
+      const x = cv.getContext('2d');
+      x.fillStyle = '#8a5a33'; x.fillRect(0, 0, 512, 512);
+      for (let r = 14; r < 380; r += 7 + Math.sin(r * 1.7) * 3) {
+        x.beginPath();
+        x.arc(256 + Math.sin(r * 0.6) * 10, 256 + Math.cos(r * 0.43) * 8, r, 0, 7);
+        x.strokeStyle = (r % 2 ? 'rgba(58,35,18,' : 'rgba(214,164,110,') + (0.05 + Math.abs(Math.sin(r)) * 0.06) + ')';
+        x.lineWidth = 1.5 + Math.abs(Math.sin(r * 2.3)) * 2.2;
+        x.stroke();
+      }
+      const tx = new THREE.CanvasTexture(cv);
+      tx.anisotropy = 8;
+      tx.colorSpace = THREE.SRGBColorSpace;
+      return tx;
+    }
+    const table = new THREE.Group();
+    const topMat = new THREE.MeshStandardMaterial({ map: woodTexture(), roughness: 0.55, metalness: 0.02 });
+    const legMat = new THREE.MeshStandardMaterial({ color: 0x6f4527, roughness: 0.6 });
+    const top = new THREE.Mesh(new THREE.CylinderGeometry(topR, topR * 0.965, topTh, 64), topMat);
+    top.position.y = tableH - topTh / 2;
+    top.castShadow = top.receiveShadow = true;
+    table.add(top);
+    const legLen = (tableH - topTh) / Math.cos(0.23) + 0.02;
+    for (let k = 0; k < 3; k++) {
+      const holder = new THREE.Group();
+      holder.rotation.y = -Math.PI / 2 + k * Math.PI * 2 / 3;
+      const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.028, legLen, 20), legMat);
+      leg.position.set(0.91, (tableH - topTh) / 2, 0);
+      leg.rotation.z = -0.23;
+      leg.castShadow = leg.receiveShadow = true;
+      holder.add(leg);
+      table.add(holder);
+    }
+    scene.add(table);
+
+    const unit = new THREE.Group();
+    unit.position.y = tableH + 0.06;
+    scene.add(unit);
+
+    // ---------- milk crate (parameterized so the TV stand reuses it) ----------
+    const CW = 1.5, CH = 1.1, CD = 1.5, T = 0.045;
+    const crateMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(this.props.crateColor || '#C23B2E'), roughness: 0.55, metalness: 0.05 });
+
+    function buildCrate(mat) {
+      const crate = new THREE.Group();
+      function bar(w, h, d, x, y, z, g) {
+        const m = new THREE.Mesh(new RoundedBoxGeometry(w, h, d, 2, 0.012), mat);
+        m.position.set(x, y, z);
+        m.castShadow = m.receiveShadow = true;
+        (g || crate).add(m);
+        return m;
+      }
+      bar(CW, T * 1.4, CD, 0, T * 0.7, 0);
+      for (const x of [-CW / 2 + T, 0, CW / 2 - T]) bar(T * 1.6, 0.06, CD, x, -0.03, 0);
+      function makeWall(width) {
+        const g = new THREE.Group();
+        bar(width, 0.11, T, 0, CH - 0.055, 0, g);
+        bar(width, 0.06, T, 0, CH * 0.52, 0, g);
+        bar(width, 0.08, T, 0, 0.10, 0, g);
+        bar(T * 1.6, CH, T * 1.6, -width / 2 + T * 0.8, CH / 2, 0, g);
+        bar(T * 1.6, CH, T * 1.6, width / 2 - T * 0.8, CH / 2, 0, g);
+        const zoneY0 = 0.14, zoneY1 = CH * 0.49;
+        const n = 7;
+        const cell = width / n, zh = (zoneY1 - zoneY0) / 2;
+        const ang = Math.atan2(cell / 2, zh);
+        const dlen = 2 * Math.sqrt(Math.pow(cell / 2, 2) + zh * zh);
+        for (let i = 0; i < n; i++) {
+          const x = -width / 2 + (i + 0.5) * cell;
+          const d1 = bar(T * 0.9, dlen, T * 0.7, x, (zoneY0 + zoneY1) / 2, 0, g);
+          d1.rotation.z = ang;
+          const d2 = bar(T * 0.9, dlen, T * 0.7, x, (zoneY0 + zoneY1) / 2, 0, g);
+          d2.rotation.z = -ang;
+        }
+        const vn = 9;
+        for (let i = 0; i < vn; i++) {
+          const x = -width / 2 + (i + 0.5) * (width / vn);
+          bar(T * 0.9, CH - 0.11 - CH * 0.52, T * 0.7, x, (CH * 0.52 + CH - 0.11) / 2 + 0.01, 0, g);
+        }
+        return g;
+      }
+      const wallF = makeWall(CW); wallF.position.z = CD / 2 - T / 2; crate.add(wallF);
+      const wallB = makeWall(CW); wallB.position.z = -CD / 2 + T / 2; crate.add(wallB);
+      const wallL = makeWall(CD); wallL.rotation.y = Math.PI / 2; wallL.position.x = -CW / 2 + T / 2; crate.add(wallL);
+      const wallR = makeWall(CD); wallR.rotation.y = Math.PI / 2; wallR.position.x = CW / 2 - T / 2; crate.add(wallR);
+      return crate;
+    }
+    unit.add(buildCrate(crateMat));
+
+    // ---------- records: 10 releases. Wire real thumbnails via `art`, real videos via `videoUrl`. ----------
+    const RECORDS = [
+      { title: 'aventurine (demo)',        type: 'video', color: 0x8B83A3, art: null, videoUrl: null },
+      { title: 'field notes, vol. 1',      type: 'doc',   color: 0xCBB98A, art: null, videoUrl: null },
+      { title: 'spiral study',             type: 'image', color: 0x9F96B8, art: null, videoUrl: null },
+      { title: 'gouache hours',            type: 'video', color: 0xC297B0, art: null, videoUrl: null },
+      { title: 'patch notes for the soul', type: 'video', color: 0x99B59D, art: null, videoUrl: null },
+      { title: 'still blooming',           type: 'image', color: 0xB3CCD6, art: null, videoUrl: null },
+      { title: 'cloud maintenance',        type: 'video', color: 0xDCC7D4, art: null, videoUrl: null },
+      { title: 'breath loop 7',            type: 'video', color: 0x86A88B, art: null, videoUrl: null },
+      { title: 'low orbit stretch',        type: 'video', color: 0xAFA6C6, art: null, videoUrl: null },
+      { title: 'bloom sequence',           type: 'video', color: 0xF0E6D2, art: null, videoUrl: null }
+    ];
+    const TYPE_LABEL = { video: 'video', image: 'print', doc: 'zine' };
+    const N = RECORDS.length;
+    const S = 1.24, TH = 0.024;
+    const baseTopY = 0.065;
+    const innerZ = CD / 2 - T - 0.005;
+    const pivotH = CH - baseTopY;
+    const AV = ['#99B59D', '#C297B0', '#CBB98A', '#9F96B8', '#8B83A3'];
+
+    function luminance(hex) {
+      const c = new THREE.Color(hex);
+      return 0.299 * c.r + 0.587 * c.g + 0.114 * c.b;
+    }
+
+    function coverTexture(i, rec) {
+      const cv = document.createElement('canvas');
+      cv.width = cv.height = 512;
+      const x = cv.getContext('2d');
+      const bg = '#' + new THREE.Color(rec.color).getHexString();
+      const dark = luminance(rec.color) > 0.52;
+      const ink = dark ? '#241F2B' : '#FBF7EF';
+      x.fillStyle = bg; x.fillRect(0, 0, 512, 512);
+      // two soft color-field blooms (brand motif)
+      const b1 = AV[i % AV.length], b2 = AV[(i + 2) % AV.length];
+      let g = x.createRadialGradient(150, 170, 10, 150, 170, 260);
+      g.addColorStop(0, b1 + 'B8'); g.addColorStop(1, b1 + '00');
+      x.fillStyle = g; x.fillRect(0, 0, 512, 512);
+      g = x.createRadialGradient(390, 400, 10, 390, 400, 300);
+      g.addColorStop(0, b2 + '9E'); g.addColorStop(1, b2 + '00');
+      x.fillStyle = g; x.fillRect(0, 0, 512, 512);
+      // sleeve border
+      x.strokeStyle = ink + '55'; x.lineWidth = 3;
+      x.strokeRect(14, 14, 484, 484);
+      // number
+      x.fillStyle = ink;
+      x.font = '600 46px Syne, sans-serif';
+      x.textBaseline = 'top';
+      x.fillText(String(N - i).padStart(2, '0'), 34, 32);
+      // type label
+      x.font = '600 21px "Hanken Grotesk", sans-serif';
+      const label = TYPE_LABEL[rec.type].toUpperCase();
+      x.save();
+      x.translate(478 - x.measureText(label).width, 40);
+      let cx0 = 0;
+      for (const ch of label) { x.fillText(ch, cx0, 0); cx0 += x.measureText(ch).width + 4; }
+      x.restore();
+      // title (Instrument Serif italic, wrapped)
+      x.font = 'italic 54px "Instrument Serif", serif';
+      x.textBaseline = 'alphabetic';
+      const words = rec.title.split(' ');
+      const lines = [];
+      let line = '';
+      for (const w of words) {
+        const t = line ? line + ' ' + w : w;
+        if (x.measureText(t).width > 420 && line) { lines.push(line); line = w; } else line = t;
+      }
+      lines.push(line);
+      let ty = 470 - (lines.length - 1) * 58;
+      for (const l of lines) { x.fillText(l, 34, ty); ty += 58; }
+      const tx = new THREE.CanvasTexture(cv);
+      tx.anisotropy = 8;
+      tx.colorSpace = THREE.SRGBColorSpace;
+      return tx;
+    }
+
+    const records = [];
+    const recordsGroup = new THREE.Group();
+    const zStart = -CD / 2 + 0.12, zEnd = CD / 2 - 0.14;
+    const texLoader = new THREE.TextureLoader();
+
+    for (let i = 0; i < N; i++) {
+      const t = i / (N - 1);
+      const rec0 = RECORDS[i];
+      let tex = coverTexture(i, rec0);
+      if (rec0.art) {
+        texLoader.load(rec0.art, function (loaded) {
+          loaded.colorSpace = THREE.SRGBColorSpace;
+          loaded.anisotropy = 8;
+          faceMat.map = loaded; faceMat.needsUpdate = true;
+        });
+      }
+      const faceMat = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.72 });
+      const edgeMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(rec0.color).multiplyScalar(0.66), roughness: 0.85 });
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(S, S, TH),
+        [edgeMat, edgeMat, edgeMat, edgeMat, faceMat, faceMat.clone()]);
+      mesh.castShadow = mesh.receiveShadow = true;
+      mesh.position.y = S / 2;
+      const g = new THREE.Group();
+      g.add(mesh);
+      const z = zStart + t * (zEnd - zStart);
+      g.position.set(Math.sin(i * 3.3) * 0.03, baseTopY, z);
+      const jitter = Math.sin(i * 2.7) * 0.02;
+      const flippedInFront = N - 1 - i;
+      const cornerZ = innerZ + 0.01 - flippedInFront * TH * 1.1;
+      const fwdCap = Math.atan2(cornerZ - z, pivotH);
+      const rec = {
+        g: g, mesh: mesh, i: i,
+        title: rec0.title, type: rec0.type, videoUrl: rec0.videoUrl,
+        slotZ: z, homeX: Math.sin(i * 3.3) * 0.03,
+        backA: -0.26 + jitter * 0.3,
+        fwdA: Math.max(0.06, fwdCap),
+        angle: 0, lift: 0, focus: false, detached: false
+      };
+      rec.angle = rec.backA;
+      g.rotation.x = rec.backA;
+      records.push(rec);
+      recordsGroup.add(g);
+    }
+    for (let i = 0; i < N; i++) {
+      const r = records[i];
+      const wallCap = -Math.atan2(r.slotZ + innerZ, pivotH);
+      const restCap = i === 0 ? -Infinity : records[i - 1].backA - 0.048;
+      r.backA = Math.max(r.backA, wallCap, restCap);
+      r.angle = r.backA;
+      r.g.rotation.x = r.backA;
+    }
+    unit.add(recordsGroup);
+
+    // ---------- tween engine (smooth lerping; no external dep) ----------
+    const tweens = [];
+    const easeInOut = function (k) { return k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; };
+    const easeOut = function (k) { return 1 - Math.pow(1 - k, 3); };
+    const easeIn = function (k) { return k * k * k; };
+    const easeOutBack = function (k) { const c = 1.35; return 1 + (c + 1) * Math.pow(k - 1, 3) + c * Math.pow(k - 1, 2); };
+    function tw(o) {
+      o.elapsed = -(o.delay || 0);
+      o.dur = reduceMotion ? Math.min(o.dur * 0.3, 0.25) : o.dur;
+      o.ease = o.ease || easeInOut;
+      tweens.push(o);
+      return o;
+    }
+    function killTag(tag) {
+      for (let i = tweens.length - 1; i >= 0; i--) if (tweens[i].tag === tag) tweens.splice(i, 1);
+    }
+    function updateTweens(dt) {
+      for (let i = tweens.length - 1; i >= 0; i--) {
+        const o = tweens[i];
+        o.elapsed += dt;
+        if (o.elapsed < 0) continue;
+        const k = Math.min(o.elapsed / o.dur, 1);
+        o.update(o.ease(k), k);
+        if (k >= 1) { tweens.splice(i, 1); if (o.done) o.done(); }
+      }
+    }
+    function hasCamTween() {
+      for (const o of tweens) if (o.tag === 'cam') return true;
+      return false;
+    }
+    function tweenCam(toPos, toTgt, dur, ease, done) {
+      killTag('cam');
+      const p0 = cam.pos.clone(), t0 = cam.tgt.clone();
+      tw({ dur: dur, ease: ease || easeInOut, tag: 'cam', update: function (e) {
+        cam.pos.lerpVectors(p0, toPos, e);
+        cam.tgt.lerpVectors(t0, toTgt, e);
+      }, done: done });
+    }
+    function fitDistance(w, h, margin) {
+      const tanH = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      const dH = (h / 2) / tanH;
+      const dW = (w / 2) / (tanH * camera.aspect);
+      return Math.max(dH, dW) * (margin || 1.03);
+    }
+
+    // ---------- rain (starts on first scroll, never stops) ----------
+    let rain = null, rainOn = false;
+    function rainRegion() {
+      // project the DOM cloud's footprint onto the scene's z=0 plane
+      const el = document.getElementById('av-cloud-wrap');
+      const fallback = { cx: 0, topY: 4.9, halfW: 1.5 };
+      if (!el) return fallback;
+      const r = el.getBoundingClientRect();
+      if (!r.width) return fallback;
+      const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+      const rc = new THREE.Raycaster();
+      const out = [];
+      const pts = [[r.left + r.width / 2, r.bottom], [r.left, r.bottom], [r.right, r.bottom]];
+      const tmpCam = camera.clone();
+      tmpCam.position.copy(camHome.pos);
+      tmpCam.lookAt(camHome.tgt);
+      tmpCam.updateMatrixWorld();
+      for (const p of pts) {
+        const ndc = new THREE.Vector2((p[0] / innerWidth) * 2 - 1, -(p[1] / innerHeight) * 2 + 1);
+        rc.setFromCamera(ndc, tmpCam);
+        const hit = new THREE.Vector3();
+        if (!rc.ray.intersectPlane(plane, hit)) return fallback;
+        out.push(hit);
+      }
+      return {
+        cx: out[0].x,
+        topY: Math.max(3.6, out[0].y),
+        halfW: Math.min(2.4, Math.max(0.9, Math.abs(out[2].x - out[1].x) / 2))
+      };
+    }
+    function streakTexture() {
+      const cv = document.createElement('canvas');
+      cv.width = 16; cv.height = 64;
+      const x = cv.getContext('2d');
+      const g = x.createLinearGradient(0, 0, 0, 64);
+      g.addColorStop(0, 'rgba(255,255,255,0)');
+      g.addColorStop(0.35, 'rgba(255,255,255,0.9)');
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      x.fillStyle = g;
+      x.fillRect(6, 0, 4, 64);
+      return new THREE.CanvasTexture(cv);
+    }
+    function buildRain() {
+      const reg = rainRegion();
+      const COUNT = Math.round(self.props.rainDensity != null ? self.props.rainDensity : 520);
+      const pos = new Float32Array(COUNT * 3);
+      const spd = new Float32Array(COUNT);
+      for (let i = 0; i < COUNT; i++) {
+        pos[i * 3] = reg.cx + (Math.random() * 2 - 1) * reg.halfW;
+        pos[i * 3 + 1] = Math.random() * reg.topY;
+        pos[i * 3 + 2] = (Math.random() * 2 - 1) * 1.1;
+        spd[i] = 1.9 + Math.random() * 1.6;
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      const mat = new THREE.PointsMaterial({
+        map: streakTexture(), size: 0.14, transparent: true, opacity: 0.5,
+        color: 0xeef4fa, depthWrite: false, sizeAttenuation: true
+      });
+      const pts = new THREE.Points(geo, mat);
+      pts.frustumCulled = false;
+      scene.add(pts);
+      return { pts: pts, spd: spd, reg: reg, count: COUNT };
+    }
+    function startRain() {
+      if (rainOn) return;
+      rainOn = true;
+      rain = buildRain();
+    }
+    this._live = { crateMat: crateMat, staticU: null, rebuildRain: function () {
+      if (!rainOn) return;
+      scene.remove(rain.pts);
+      rain.pts.geometry.dispose(); rain.pts.material.dispose();
+      rain = buildRain();
+    } };
+
+    // ---------- CRT tube TV (9:16 portrait, generated on first video click) ----------
+    const SCREEN_W = 0.855, SCREEN_H = 1.52; // 9:16
+    let tv = null;
+    const staticUniforms = {
+      uTime: { value: 0 },
+      uPower: { value: 0 },
+      uIntensity: { value: this.props.staticIntensity != null ? this.props.staticIntensity : 1 }
+    };
+    this._live.staticU = staticUniforms;
+    const STATIC_VERT = 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }';
+    const STATIC_FRAG = [
+      'precision highp float;',
+      'varying vec2 vUv;',
+      'uniform float uTime; uniform float uPower; uniform float uIntensity;',
+      'float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }',
+      'void main(){',
+      '  vec2 c = vUv - 0.5;',
+      '  vec2 uv = vUv + c * dot(c, c) * 0.22;', // barrel curvature
+      '  float inb = step(0.0, uv.x) * step(uv.x, 1.0) * step(0.0, uv.y) * step(uv.y, 1.0);',
+      '  float n = hash(floor(uv * vec2(190.0, 338.0)) + vec2(floor(uTime * 24.0) * 13.7));',
+      '  n = mix(n, hash(floor(uv * vec2(95.0, 170.0)) + vec2(floor(uTime * 30.0) * 7.3)), 0.35);',
+      '  float scan = 0.88 + 0.12 * sin((uv.y + uTime * 0.35) * 640.0);',
+      '  float band = 0.78 + 0.22 * smoothstep(0.05, 0.3, abs(fract(uv.y + uTime * 0.13) - 0.5));',
+      '  vec3 dk = vec3(0.086, 0.078, 0.11);',
+      '  vec3 lt = vec3(0.95, 0.93, 0.9);',
+      '  vec3 col = mix(dk, lt, pow(n, 1.15)) * scan * band * uIntensity;',
+      '  float vg = 1.0 - smoothstep(0.35, 1.25, length(c) * 2.1);',
+      '  col *= mix(0.25, 1.0, vg);',
+      '  vec3 offCol = vec3(0.075, 0.068, 0.095) * mix(0.7, 1.0, vg);',
+      '  vec3 fin = mix(offCol, col, clamp(uPower, 0.0, 1.0));',
+      '  fin = mix(offCol, fin, inb);',
+      '  gl_FragColor = vec4(fin, 1.0);',
+      '}'
+    ].join('\n');
+
+    const TV_POS = new THREE.Vector3(-3.15, 0, 0.42);
+    const TV_YAW = 0.34;
+    const BODY_W = 1.34, BODY_H = 2.0, BODY_D = 1.0;
+    const STAND_H = 0.9; // upside-down periwinkle crate
+
+    function buildTV() {
+      const g = new THREE.Group();
+      // stand: second milk crate, flipped
+      const standMat = new THREE.MeshStandardMaterial({ color: 0x9f96b8, roughness: 0.55, metalness: 0.05 });
+      const stand = buildCrate(standMat);
+      stand.scale.setScalar(STAND_H / CH);
+      stand.rotation.x = Math.PI;
+      stand.rotation.y = Math.PI / 5;
+      stand.position.y = STAND_H;
+      g.add(stand);
+      // body
+      const plastic = new THREE.MeshStandardMaterial({ color: 0xede4d2, roughness: 0.5, metalness: 0.02 });
+      const body = new THREE.Mesh(new RoundedBoxGeometry(BODY_W, BODY_H, BODY_D, 4, 0.07), plastic);
+      body.position.y = STAND_H + BODY_H / 2;
+      body.castShadow = body.receiveShadow = true;
+      g.add(body);
+      // bezel
+      const bezel = new THREE.Mesh(
+        new RoundedBoxGeometry(SCREEN_W + 0.17, SCREEN_H + 0.17, 0.07, 3, 0.045),
+        new THREE.MeshStandardMaterial({ color: 0x4a4356, roughness: 0.4 })
+      );
+      bezel.position.set(0, STAND_H + BODY_H / 2 + 0.1, BODY_D / 2 - 0.005);
+      g.add(bezel);
+      // screen (static shader)
+      const screen = new THREE.Mesh(
+        new THREE.PlaneGeometry(SCREEN_W, SCREEN_H),
+        new THREE.ShaderMaterial({ uniforms: staticUniforms, vertexShader: STATIC_VERT, fragmentShader: STATIC_FRAG })
+      );
+      screen.position.set(0, STAND_H + BODY_H / 2 + 0.1, BODY_D / 2 + 0.078); // proud of the bezel slab's front face so nothing occludes it
+      g.add(screen);
+      // slot on top (where the record goes in)
+      const slot = new THREE.Mesh(
+        new THREE.BoxGeometry(1.28, 0.05, 0.1),
+        new THREE.MeshStandardMaterial({ color: 0x241f2b, roughness: 0.9 })
+      );
+      slot.position.set(0, STAND_H + BODY_H - 0.02, 0.14);
+      g.add(slot);
+      // knobs under the screen
+      for (const kx of [-0.14, 0.14]) {
+        const knob = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.055, 0.055, 0.06, 20),
+          new THREE.MeshStandardMaterial({ color: 0x8b83a3, roughness: 0.45 })
+        );
+        knob.rotation.x = Math.PI / 2;
+        knob.position.set(kx, STAND_H + 0.22, BODY_D / 2 + 0.02);
+        g.add(knob);
+      }
+      // rabbit-ear antenna
+      const antMat = new THREE.MeshStandardMaterial({ color: 0x555058, roughness: 0.35, metalness: 0.6 });
+      for (const s of [-1, 1]) {
+        const ant = new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.008, 0.95, 8), antMat);
+        ant.position.set(s * 0.22, STAND_H + BODY_H + 0.42, -0.3);
+        ant.rotation.z = s * 0.5;
+        g.add(ant);
+      }
+      g.position.copy(TV_POS);
+      g.rotation.y = TV_YAW;
+      g.traverse(function (o) { if (o.isMesh) { o.castShadow = true; } });
+      scene.add(g);
+      const screenCenter = new THREE.Vector3();
+      screen.getWorldPosition(screenCenter);
+      const normal = new THREE.Vector3(0, 0, 1).applyAxisAngle(new THREE.Vector3(0, 1, 0), TV_YAW);
+      return { g: g, screen: screen, screenCenter: screenCenter, normal: normal,
+        slotTop: new THREE.Vector3(0, STAND_H + BODY_H, 0.14).applyAxisAngle(new THREE.Vector3(0, 1, 0), TV_YAW).add(TV_POS) };
+    }
+    function ensureTV() {
+      if (tv) return tv;
+      tv = buildTV();
+      tv.g.scale.setScalar(0.001);
+      tw({ dur: 0.6, ease: easeOutBack, update: function (e) { tv.g.scale.setScalar(Math.max(0.001, e)); } });
+      return tv;
+    }
+    function tvFitPose() {
+      const d = fitDistance(SCREEN_W, SCREEN_H, 1.02);
+      return {
+        pos: tv.screenCenter.clone().add(tv.normal.clone().multiplyScalar(d)),
+        tgt: tv.screenCenter.clone()
+      };
+    }
+
+    // ---------- interaction state ----------
+    let mode = 'crate'; // crate | zoom | toTV | tv | returning
+    let flipTarget = 0, flipPos = 0;
+    let hovered = -1;
+    let focusRec = null;
+    let powerTarget = 0;
+    let video = null;
+
+    // chrome fade: rAF tween writing opacity imperatively — CSS transitions on
+    // these nodes proved unreliable in this runtime, and the template style
+    // attrs never mention opacity, so React re-renders leave it untouched.
+    // pointer-events still flow through state ({{ chromePE }}).
+    const chromeEls = ['av-hero', 'av-nav', 'av-hud'].map(function (id) { return document.getElementById(id); });
+    let chromeO = 1;
+    function setChrome(visible) {
+      if (!self._alive) return;
+      self.setState({ chromeHidden: !visible });
+      const from = chromeO, to = visible ? 1 : 0;
+      killTag('chrome');
+      tw({ dur: 0.55, ease: easeInOut, tag: 'chrome', update: function (e) {
+        chromeO = from + (to - from) * e;
+        for (const el of chromeEls) if (el) el.style.opacity = String(chromeO);
+      } });
+    }
+
+    const CAPTIONS = {
+      video: 'no signal yet — your video wires in here',
+      image: 'print — artwork placeholder',
+      doc: 'zine — pages coming soon'
+    };
+
+    // ---------- video-record sequence: crate → flight → CRT tube ----------
+    function playVideo(rec) {
+      if (mode !== 'crate') return;
+      mode = 'toTV';
+      focusRec = rec;
+      self.setState({ findOpen: false });
+      setChrome(false);
+      startRain();
+      const t = ensureTV();
+
+      rec.detached = true;
+      scene.attach(rec.g);
+
+      const P0 = rec.g.position.clone();
+      const q0 = rec.g.quaternion.clone();
+      const a0 = rec.angle;
+      // lifted pose: straight up out of the crate along its tilt, then upright
+      const liftDir = new THREE.Vector3(0, Math.cos(a0), Math.sin(a0));
+      const P1 = P0.clone().add(liftDir.multiplyScalar(S * 1.2));
+      const qUp = new THREE.Quaternion(); // upright, facing camera
+      // flight target: hovering above the TV slot
+      const entry = t.slotTop.clone().add(new THREE.Vector3(0, 1.3, 0));
+      const qTV = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), TV_YAW);
+      const inside = t.slotTop.clone().sub(new THREE.Vector3(0, S * 1.12, 0));
+
+      // A) slide out of the crate
+      tw({ dur: 0.7, ease: easeOut, update: function (e) {
+        rec.g.position.lerpVectors(P0, P1, e);
+        rec.g.quaternion.slerpQuaternions(q0, qUp, e);
+      } });
+
+      // B) arc flight to the slot + camera pans left to follow
+      const B1 = P1.clone().add(entry).multiplyScalar(0.5).add(new THREE.Vector3(0, 1.15, 0.35));
+      tw({ dur: 1.45, delay: 0.7, ease: easeInOut, update: function (e) {
+        const a = new THREE.Vector3().lerpVectors(P1, B1, e);
+        const b = new THREE.Vector3().lerpVectors(B1, entry, e);
+        rec.g.position.lerpVectors(a, b, e);
+        rec.g.quaternion.slerpQuaternions(qUp, qTV, e);
+      } });
+      const followPos = new THREE.Vector3(-1.35, 3.35, 6.35);
+      const followTgt = t.screenCenter.clone().add(new THREE.Vector3(0, 0.7, 0));
+      tweenCam(followPos, followTgt, 1.55, easeInOut);
+
+      // C) drop into the slot; screen crackles on as it enters
+      tw({ dur: 0.75, delay: 2.2, ease: easeIn, update: function (e) {
+        rec.g.position.lerpVectors(entry, inside, e);
+      } });
+      tw({ dur: 0.9, delay: 2.55, ease: easeOut, update: function (e) {
+        powerTarget = e;
+      } });
+
+      // D) zoom + rotate until the 9:16 screen fills the viewport
+      tw({ dur: 0.1, delay: 2.95, update: function () {}, done: function () {
+        const fit = tvFitPose();
+        tweenCam(fit.pos, fit.tgt, 1.6, easeInOut, function () {
+          mode = 'tv';
+          self.setState({ inFocus: true, captionTitle: rec.title, captionSub: rec.videoUrl ? '' : CAPTIONS.video });
+          if (rec.videoUrl) playVideoTexture(rec);
+        });
+      } });
+    }
+
+    function playVideoTexture(rec) {
+      const v = document.createElement('video');
+      v.src = rec.videoUrl;
+      v.crossOrigin = 'anonymous';
+      v.playsInline = true;
+      v.loop = true;
+      v.play().catch(function () { v.muted = true; v.play().catch(function () {}); });
+      const tex = new THREE.VideoTexture(v);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tv.screen.material = new THREE.MeshBasicMaterial({ map: tex });
+      video = v;
+    }
+
+    // ---------- doc/image sequence: pull it out + camera zooms to center it ----------
+    function zoomTo(rec) {
+      if (mode !== 'crate') return;
+      mode = 'zoom';
+      focusRec = rec;
+      rec.focus = true;
+      self.setState({ findOpen: false, inFocus: true, captionTitle: rec.title, captionSub: CAPTIONS[rec.type] || '' });
+      setChrome(false);
+      // where the record's center will settle once lifted upright
+      const a = 0.05, L = S * 1.08;
+      const cy = unit.position.y + baseTopY + L * Math.cos(a) + (S / 2) * Math.cos(a);
+      const cz = rec.slotZ + L * Math.sin(a) + (S / 2) * Math.sin(a);
+      const C = new THREE.Vector3(rec.homeX, cy, cz);
+      const d = fitDistance(S, S, 1.32);
+      const pos = C.clone().add(new THREE.Vector3(0, 0.1, d));
+      tw({ dur: 0.35, update: function () {}, done: function () {
+        tweenCam(pos, C, 1.25, easeInOut);
+      } });
+    }
+
+    // ---------- exit / return ----------
+    function exitFocus() {
+      if (mode === 'zoom') {
+        mode = 'returning';
+        self.setState({ inFocus: false });
+        focusRec.focus = false;
+        focusRec = null;
+        tweenCam(camHome.pos.clone(), camHome.tgt.clone(), 1.15, easeInOut, function () { mode = 'crate'; setChrome(true); });
+        setTimeout(function () { setChrome(true); }, 420);
+        return;
+      }
+      if (mode === 'tv') {
+        mode = 'returning';
+        self.setState({ inFocus: false });
+        const rec = focusRec;
+        focusRec = null;
+        if (video) { try { video.pause(); } catch (e) {} video = null; }
+        if (tv.screen.material.isShaderMaterial !== true) {
+          tv.screen.material.dispose();
+          tv.screen.material = new THREE.ShaderMaterial({ uniforms: staticUniforms, vertexShader: STATIC_VERT, fragmentShader: STATIC_FRAG });
+        }
+        const p0 = powerTarget;
+        tw({ dur: 0.4, ease: easeOut, update: function (e) { powerTarget = p0 * (1 - e); } });
+        // rise out of the slot, arc back, settle into the pile
+        const inside = rec.g.position.clone();
+        const entry = tv.slotTop.clone().add(new THREE.Vector3(0, 1.3, 0));
+        const qTV = rec.g.quaternion.clone();
+        const qUp = new THREE.Quaternion();
+        // home pose above the crate slot
+        const P1 = new THREE.Vector3(rec.homeX, unit.position.y + baseTopY + S * 1.2, rec.slotZ);
+        tw({ dur: 0.55, ease: easeOut, update: function (e) {
+          rec.g.position.lerpVectors(inside, entry, e);
+        } });
+        const B1 = entry.clone().add(P1).multiplyScalar(0.5).add(new THREE.Vector3(0, 1.0, 0.3));
+        tw({ dur: 1.25, delay: 0.55, ease: easeInOut, update: function (e) {
+          const a = new THREE.Vector3().lerpVectors(entry, B1, e);
+          const b = new THREE.Vector3().lerpVectors(B1, P1, e);
+          rec.g.position.lerpVectors(a, b, e);
+          rec.g.quaternion.slerpQuaternions(qTV, qUp, e);
+        }, done: function () {
+          recordsGroup.attach(rec.g);
+          rec.lift = S * 1.2;
+          rec.angle = 0;
+          rec.g.position.x = rec.homeX;
+          rec.detached = false; // pile physics ease it back down into its slot
+        } });
+        tweenCam(camHome.pos.clone(), camHome.tgt.clone(), 1.5, easeInOut, function () { mode = 'crate'; });
+        setTimeout(function () { setChrome(true); }, 650);
+      }
+    }
+    this._exit = exitFocus;
+
+    // ---------- input ----------
+    const ray = new THREE.Raycaster();
+    const ptr = new THREE.Vector2(10, 10);
+    let downAt = null;
+
+    function onWheel(e) {
+      e.preventDefault();
+      startRain();
+      if (mode !== 'crate') return;
+      flipTarget = Math.max(0, Math.min(N - 1, flipTarget + e.deltaY * 0.006));
+    }
+    function onPointerMove(e) {
+      ptr.x = (e.clientX / innerWidth) * 2 - 1;
+      ptr.y = -(e.clientY / innerHeight) * 2 + 1;
+      if (downAt && e.pointerType === 'touch' && mode === 'crate') {
+        const dy = downAt.lastY - e.clientY;
+        downAt.lastY = e.clientY;
+        downAt.moved = downAt.moved || Math.abs(e.clientY - downAt.y) > 8 || Math.abs(e.clientX - downAt.x) > 8;
+        if (downAt.moved) {
+          startRain();
+          flipTarget = Math.max(0, Math.min(N - 1, flipTarget + dy * 0.02));
+        }
+      }
+    }
+    function onPointerDown(e) {
+      downAt = { x: e.clientX, y: e.clientY, lastY: e.clientY, t: performance.now(), moved: false };
+    }
+    function onPointerUp(e) {
+      const wasTap = downAt && !downAt.moved && performance.now() - downAt.t < 450;
+      downAt = null;
+      if (!wasTap) return;
+      const nx = (e.clientX / innerWidth) * 2 - 1;
+      const ny = -(e.clientY / innerHeight) * 2 + 1;
+      handleTap(nx, ny);
+    }
+    function handleTap(nx, ny) {
+      if (mode === 'toTV' || mode === 'returning') return;
+      ray.setFromCamera(new THREE.Vector2(nx, ny), camera);
+      if (mode === 'tv') {
+        const hit = ray.intersectObject(tv.screen, false);
+        if (!hit.length) exitFocus();
+        return;
+      }
+      if (mode === 'zoom') { exitFocus(); return; }
+      const hits = ray.intersectObjects(records.filter(function (r) { return !r.detached; }).map(function (r) { return r.mesh; }), false);
+      if (!hits.length) return;
+      const rec = records.find(function (r) { return r.mesh === hits[0].object; });
+      if (!rec) return;
+      if (rec.type === 'video') playVideo(rec); else zoomTo(rec);
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') exitFocus();
+    }
+    function onResize() {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+      frameCamera();
+      if (mode === 'tv' && tv && !hasCamTween()) {
+        const fit = tvFitPose();
+        cam.pos.copy(fit.pos);
+        cam.tgt.copy(fit.tgt);
+      }
+    }
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('keydown', onKey);
+    window.addEventListener('resize', onResize);
+    this._cleanup = function () {
+      window.removeEventListener('wheel', onWheel);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('pointerup', onPointerUp);
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('resize', onResize);
+      renderer.dispose();
+      if (host.contains(renderer.domElement)) host.removeChild(renderer.domElement);
+    };
+
+    // ---------- main loop ----------
+    const clock = new THREE.Clock();
+    const smooth = function (a, b, k) { return a + (b - a) * k; };
+    let shownIdx = -1;
+    let elapsed = 0;
+
+    const loop = function () {
+      if (!self._alive) return;
+      self._raf = requestAnimationFrame(loop);
+      const dt = Math.min(clock.getDelta(), 0.05);
+      elapsed += dt;
+
+      updateTweens(dt);
+
+      // hover pick (only while browsing the crate, fine pointers)
+      if (mode === 'crate' && !coarse) {
+        ray.setFromCamera(ptr, camera);
+        const hits = ray.intersectObjects(records.filter(function (r) { return !r.detached; }).map(function (r) { return r.mesh; }), false);
+        hovered = hits.length ? records.findIndex(function (r) { return r.mesh === hits[0].object; }) : -1;
+        renderer.domElement.style.cursor = hovered >= 0 ? 'pointer' : 'default';
+      } else {
+        hovered = -1;
+        renderer.domElement.style.cursor = mode === 'zoom' || mode === 'tv' ? 'zoom-out' : 'default';
+      }
+
+      // flip through the pile
+      flipPos = smooth(flipPos, flipTarget, 0.10);
+      for (const r of records) {
+        if (r.detached) continue;
+        let targetA, targetLift;
+        if (r.focus) {
+          targetA = 0.05;
+          targetLift = S * 1.08;
+        } else {
+          const d = flipPos - (N - 1 - r.i);
+          const s = Math.max(0, Math.min(1, d + 0.5));
+          const e2 = s * s * (3 - 2 * s);
+          targetA = r.backA + (r.fwdA - r.backA) * e2;
+          targetLift = (mode === 'crate' && r.i === hovered) ? S * 0.45 : 0;
+        }
+        r.angle = smooth(r.angle, targetA, 0.16);
+        r.lift = smooth(r.lift, targetLift, 0.16);
+        r.g.rotation.x = r.angle;
+        r.g.position.y = baseTopY + r.lift * Math.cos(r.angle);
+        r.g.position.z = r.slotZ + r.lift * Math.sin(r.angle);
+      }
+
+      // rain: continuous once started
+      if (rainOn && rain) {
+        const p = rain.pts.geometry.attributes.position;
+        for (let i = 0; i < rain.count; i++) {
+          let y = p.array[i * 3 + 1] - rain.spd[i] * dt;
+          p.array[i * 3] += dt * -0.06;
+          if (y < 0.02) {
+            y = rain.reg.topY + Math.random() * 0.9;
+            p.array[i * 3] = rain.reg.cx + (Math.random() * 2 - 1) * rain.reg.halfW;
+            p.array[i * 3 + 2] = (Math.random() * 2 - 1) * 1.1;
+          }
+          p.array[i * 3 + 1] = y;
+        }
+        p.needsUpdate = true;
+      }
+
+      // TV static
+      staticUniforms.uTime.value = elapsed;
+      const flicker = powerTarget > 0 && powerTarget < 1 ? (0.85 + 0.15 * Math.sin(elapsed * 47.0)) : 1;
+      staticUniforms.uPower.value = powerTarget * flicker;
+
+      // camera: gentle parallax while browsing; tweens own it otherwise
+      if (mode === 'crate' && !hasCamTween()) {
+        const k = 1 - Math.exp(-dt * 3);
+        cam.pos.x = smooth(cam.pos.x, camHome.pos.x + ptr.x * 0.3, k);
+        cam.pos.y = smooth(cam.pos.y, camHome.pos.y + ptr.y * 0.16, k);
+        cam.pos.z = smooth(cam.pos.z, camHome.pos.z, k);
+        cam.tgt.lerp(camHome.tgt, k);
+      }
+      camera.position.copy(cam.pos);
+      camera.lookAt(cam.tgt);
+
+      // counter
+      const cur = hovered >= 0 ? (N - hovered) : Math.min(N, Math.round(flipPos) + 1);
+      if (cur !== shownIdx) {
+        shownIdx = cur;
+        self.setState({ counterText: String(cur).padStart(2, '0') + ' / ' + String(N).padStart(2, '0') });
+      }
+
+      renderer.render(scene, camera);
+    };
+    loop();
+  }
+}
+</script>
+</body>
+</html>
