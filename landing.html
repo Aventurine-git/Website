@@ -186,13 +186,13 @@
 
     /* ---- HERO ---- */
     .hero {
-      min-height: 100vh;
+      min-height: 56vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: var(--space-9) var(--gutter);
+      padding: var(--space-7) var(--gutter) var(--space-4);
     }
 
     .hero-logo-slot {
@@ -231,23 +231,25 @@
       font-weight: var(--weight-medium);
     }
 
-    .hero-scroll {
-      margin-top: var(--space-9);
-      font-size: var(--text-xs);
-      letter-spacing: var(--tracking-wide);
-      color: rgba(251, 247, 239, 0.6);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-2);
-      animation: bob 2.4s var(--ease-soft) infinite;
+    .hero-stills {
+      position: relative;
+      z-index: 3;
+      width: 792px;
+      max-width: 100%;
+      height: 380px;
+      margin: 0 auto var(--space-4);
     }
-
-    @keyframes bob {
-      50% {
-        transform: translateY(6px);
-      }
+    .still {
+      position: absolute;
+      width: 200px;
+      height: 355px;
+      object-fit: cover;
+      border-radius: 20px;
+      box-shadow: var(--shadow-lg);
     }
+    .still-1 { left: -4px;  top: 100px; }
+    .still-2 { left: 298px; top: 51px; }
+    .still-3 { left: 595px; top: 100px; }
 
     /* ---- CONTENT PANELS (on cream, readable) ---- */
     .panel {
@@ -526,11 +528,13 @@
         <img src="assets/wordmark.png" alt="" style="max-width: 100%; height: auto; max-height: 120px; filter: drop-shadow(0 4px 20px rgba(36, 31, 43, 0.35));">
       </h1>
       <div class="hero-tag">Mixed Media VFX Expressionism</div>
-      <div class="hero-scroll">
-        <span>wander in</span>
-        <span>↓</span>
-      </div>
     </header>
+
+    <div class="hero-stills">
+      <img src="assets/hero-still-1.png" alt="" class="still still-1">
+      <img src="assets/hero-still-2.jpg" alt="" class="still still-2">
+      <img src="assets/hero-still-3.png" alt="" class="still still-3">
+    </div>
 
     <!-- ABOUT -->
     <section class="panel" id="about" data-screen-label="About">
