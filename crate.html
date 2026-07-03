@@ -72,13 +72,17 @@
       pointer-events: none;
     }
     .hero-tag {
+      position: absolute;
+      top: 62%;
+      left: 50%; transform: translateX(-50%);
+      white-space: nowrap;
       font-size: var(--text-sm, 0.875rem);
       letter-spacing: var(--tracking-wider, 0.14em);
       text-transform: uppercase;
       color: rgba(251, 247, 239, 0.85);
       font-weight: var(--weight-medium, 500);
       text-shadow: 0 2px 24px rgba(36, 31, 43, 0.25);
-      margin-top: 4px;
+      pointer-events: none;
     }
 
     /* ---------- nav ---------- */
@@ -222,8 +226,8 @@
     <div id="av-cloud-wrap">
       <img id="cloud-logo" src="assets/logo.png" alt="Aventurine Dream cloud logo">
       <img id="wordmark-img" src="assets/wordmark.png" alt="aventurine dream">
+      <div class="hero-tag">Mixed Media VFX Expressionism</div>
     </div>
-    <div class="hero-tag">Mixed Media VFX Expressionism</div>
   </div>
 
   <!-- nav -->
