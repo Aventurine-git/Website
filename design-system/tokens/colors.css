@@ -1,0 +1,61 @@
+/* ============================================================
+   AVENTURINE DREAM — COLOR TOKENS
+   Dusty, grayed pastels. Saturated pastels pulled toward gray.
+   The palette is a color field: colors bleed, overlap, bloom.
+   ============================================================ */
+
+:root {
+  /* ---- Core palette (grayed pastels) ---- */
+  --av-green:      #99b59d;  /* Aventurine — the anchor stone */
+  --av-magenta:    #c297b0;  /* dusty magenta / rose */
+  --av-butter:     #cbb98a;  /* butter yellow, muted */
+  --av-periwinkle: #9f96b8;  /* soft periwinkle */
+  --av-mauve:      #8b83a3;  /* grayed mauve */
+  --av-powder:     #b3ccd6;  /* powder blue — the base beneath the field */
+
+  /* ---- Tints (lighter, for surfaces & washes) ---- */
+  --av-green-tint:      #c3d6c6;
+  --av-magenta-tint:    #ddc2d2;
+  --av-butter-tint:     #e6dcc0;
+  --av-periwinkle-tint: #c9c3da;
+  --av-mauve-tint:      #bcb6cc;
+
+  /* ---- Shades (deeper, for text-on-color & depth) ---- */
+  --av-green-deep:      #6a8a70;
+  --av-magenta-deep:    #97627e;
+  --av-butter-deep:     #a08a52;
+  --av-periwinkle-deep: #6f6591;
+  --av-mauve-deep:      #5f5878;
+
+  /* ---- Neutrals (warm-cool grays, never pure) ---- */
+  --av-ink:      #241f2b;  /* near-black plum — primary text */
+  --av-ink-soft: #443c4f;  /* softened ink — secondary text */
+  --av-slate:    #6d6577;  /* muted slate — tertiary text */
+  --av-cream:    #f5efe4;  /* warm cream — light text on color */
+  --av-cream-hi: #fbf7ef;  /* high cream — wordmark on color */
+  --av-shell:    #ece5da;  /* light shell surface */
+  --av-dusk:     #15121a;  /* deep dusk background */
+
+  /* ---- Semantic aliases ---- */
+  --text-primary:    var(--av-ink);
+  --text-secondary:  var(--av-ink-soft);
+  --text-tertiary:   var(--av-slate);
+  --text-on-color:   var(--av-cream-hi);
+  --text-inverse:    var(--av-cream);
+
+  --surface-page:    var(--av-cream);
+  --surface-card:    var(--av-cream-hi);
+  --surface-shell:   var(--av-shell);
+  --surface-dusk:    var(--av-dusk);
+
+  --accent-primary:   var(--av-green);
+  --accent-secondary: var(--av-magenta);
+  --accent-warm:      var(--av-butter);
+  --accent-cool:      var(--av-periwinkle);
+
+  --border-soft:  rgba(36, 31, 43, 0.12);
+  --border-hair:  rgba(36, 31, 43, 0.07);
+
+  /* ---- Opal: iridescent trim gradient (mineral shimmer) ---- */
+  --gradient-opal: linear-gradient(120deg, #d3e5df 0%, #dcd3e8 28%, #ecdae2 52%, #e6e1cb 76%, #d3e5df 100%); /* @kind other */
+}
