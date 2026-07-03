@@ -54,17 +54,22 @@
       pointer-events: none;
     }
     #av-cloud-wrap {
+      position: relative;
       display: flex; align-items: center; justify-content: center;
       pointer-events: auto;
     }
     #cloud-logo {
-      width: 299px; height: 179px;
+      width: min(88vw, 520px); height: auto;
       object-fit: contain; display: block;
     }
     #wordmark-img {
-      width: min(62vw, 330px);
-      height: clamp(38px, min(9vw, 8vh), 64px);
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(54vw, 320px);
+      height: auto;
       object-fit: contain; display: block;
+      pointer-events: none;
     }
     .hero-tag {
       font-size: var(--text-sm, 0.875rem);
@@ -215,11 +220,9 @@
   <!-- hero: cloud logo + wordmark + tagline -->
   <div id="av-hero">
     <div id="av-cloud-wrap">
-      <!-- cloud logo: replace src with your cloud asset -->
       <img id="cloud-logo" src="assets/logo.png" alt="Aventurine Dream cloud logo">
+      <img id="wordmark-img" src="assets/wordmark.png" alt="aventurine dream">
     </div>
-    <!-- wordmark: replace src with your wordmark asset -->
-    <img id="wordmark-img" src="assets/wordmark.png" alt="aventurine dream">
     <div class="hero-tag">Mixed Media VFX Expressionism</div>
   </div>
 
