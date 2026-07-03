@@ -46,4 +46,5 @@
     --dur-slow: 0ms; /* @kind other */
     --dur-drift: 0ms; /* @kind other */
   }
+  .blob { animation: none; }
 }

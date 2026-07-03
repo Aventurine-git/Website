@@ -233,7 +233,12 @@
   <!-- nav -->
   <nav id="av-nav">
     <div class="nav-mark">Aventurine Dream</div>
-    <button class="btn" id="find-me-btn" type="button">find me</button>
+    <div style="display: flex; gap: 12px; pointer-events: auto;">
+      <label class="btn" style="cursor: pointer;">
+        <input type="checkbox" id="acc-toggle" onchange="window.location.href = this.checked ? 'landing.html' : 'index.html'"> Accessible
+      </label>
+      <button class="btn" id="find-me-btn" type="button">find me</button>
+    </div>
   </nav>
 
   <!-- find-me popover -->

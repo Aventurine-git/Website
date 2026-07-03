@@ -17,6 +17,10 @@
       scroll-behavior: smooth;
     }
 
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
     body {
       font-family: var(--font-body);
       color: var(--text-primary);
@@ -33,6 +37,31 @@
     a {
       color: inherit;
       text-decoration: none;
+    }
+
+    /* ---- Skip navigation link ---- */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 0;
+      background: #2b1b33;
+      color: #fbf7ef;
+      padding: 8px 16px;
+      z-index: 9999;
+      font-size: var(--text-sm);
+      font-weight: var(--weight-semibold);
+      text-decoration: underline;
+      border-radius: 0 0 8px 0;
+    }
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* ---- Focus visibility for nav links ---- */
+    .nav-links a:focus-visible {
+      outline: 2px solid var(--av-cream-hi);
+      outline-offset: 4px;
+      border-radius: 4px;
     }
 
     /* ============ COLOR FIELD BACKDROP ============ */
@@ -155,7 +184,11 @@
       align-items: center;
       justify-content: space-between;
       padding: var(--space-5) var(--gutter);
+      background: rgba(43, 27, 51, 0.9); /* Dark purple background */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       mix-blend-mode: normal;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
     }
 
     .nav-mark {
@@ -311,6 +344,10 @@
       line-height: var(--leading-relaxed);
       color: var(--text-secondary);
       max-width: var(--container-text);
+    }
+
+    .about-body p {
+      text-indent: 2em;
     }
 
     .about-body p+p {
@@ -481,7 +518,7 @@
       transform: none;
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 800px) {
       .nav-links {
         gap: var(--space-4);
       }
@@ -489,11 +526,43 @@
       .nav-links a.hide-sm {
         display: none;
       }
+      
+      .hero-stills {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        height: auto;
+        padding: 20px var(--gutter);
+        gap: 16px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      
+      .hero-stills::-webkit-scrollbar {
+        display: none;
+      }
+      
+      .still {
+        position: static;
+        flex: 0 0 240px;
+        height: 340px;
+        scroll-snap-align: center;
+      }
+      
+      .still-1, .still-2, .still-3 {
+        left: auto;
+        top: auto;
+      }
     }
   </style>
 </head>
 
 <body>
+
+  <!-- Skip navigation link -->
+  <a href="#about" class="skip-link">Skip to main content</a>
 
   <!-- Color-field backdrop -->
   <div class="field" aria-hidden="true">
@@ -509,12 +578,13 @@
   <div class="page">
 
     <!-- NAV -->
-    <nav>
+    <nav aria-label="Main navigation">
       <div class="nav-mark">Aventurine Dream</div>
       <div class="nav-links">
-        <a href="#about" class="hide-sm">about</a>
-        <a href="#soon">what's coming</a>
-        <a href="#connect">find me</a>
+        <a href="#about" class="hide-sm" aria-label="About Aventurine Dream">about</a>
+        <a href="#soon" aria-label="What's coming from Aventurine Dream">what's coming</a>
+        <a href="index.html" aria-label="Switch to immersive version">Immersive</a>
+        <a href="#connect" aria-label="Find me on social media">find me</a>
       </div>
     </nav>
 
@@ -530,7 +600,7 @@
       <div class="hero-tag">Mixed Media VFX Expressionism</div>
     </header>
 
-    <div class="hero-stills">
+    <div class="hero-stills" role="region" aria-label="Preview gallery" tabindex="0">
       <img src="assets/hero-still-1.png" alt="" class="still still-1">
       <img src="assets/hero-still-2.jpg" alt="" class="still still-2">
       <img src="assets/hero-still-3.png" alt="" class="still still-3">
@@ -541,8 +611,8 @@
       <div class="panel-inner">
         <div class="about-grid">
           <div class="about-body reveal">
-            <p>
-              &emsp;&emsp;Worshipping the big bang by virtually manipulating it to reflect my fantasies. As above, so
+            <p style="text-indent: 2em;">
+              Worshipping the big bang by virtually manipulating it to reflect my fantasies. As above, so
               bellows, you’ve found a mirror of souls. Consciousness echoes. Circles and Love and god and her
               playthings. Voyeur beware, I craft experiences beyond observation. Let your mind off leash. Comfort is not
               peace.
@@ -588,7 +658,7 @@
     </section>
 
     <!-- FOOTER / CONNECT -->
-    <footer id="connect" data-screen-label="Connect">
+    <footer id="connect" data-screen-label="Connect" aria-label="Connect with Aventurine Dream">
       <div class="foot-mark reveal">aventurine dream</div>
       <div class="socials reveal">
         <a class="social" href="https://www.twitch.tv/aventurinedream" target="_blank" rel="noopener noreferrer" aria-label="Twitch">
