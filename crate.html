@@ -400,7 +400,7 @@
         let ty = 3.05 - spanH * (0.5 - heroFrac - 0.03);
         ty = Math.max(2.52, Math.min(3.45, ty));
         camHome.tgt.set(0, ty, 0);
-        camHome.pos.set(0.55, ty + 1.55, 7.5);
+        camHome.pos.set(0.55, ty + 3.1, 7.5);
       }
       frameCamera();
       const cam = { pos: camHome.pos.clone(), tgt: camHome.tgt.clone() };
